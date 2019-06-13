@@ -1,10 +1,10 @@
-import { ISearchedGroupsState } from ".";
+import { ICurrentGroupState } from ".";
 
-const initialState: ISearchedGroupsState = {
+const initialState: ICurrentGroupState = {
 
 }
 
 
-export const SearchedGroupReducer = (state = initialState, action) => {
+export const CurrentGroupReducer = (state = initialState, action) => {
     return state
 }
