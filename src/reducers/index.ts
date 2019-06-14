@@ -3,9 +3,10 @@ import { SearchedUserReducer } from "./user.reducer";
 import { CurrentGroupReducer } from "./groups.reducer";
 import { combineReducers } from "redux";
 import { SearchedGroupReducer } from "./group-search.reducer";
+import { user } from "../models/user";
 
 export interface ICurrentUserState{
-
+    currentUser: user
 }
 
 export interface ICurrentGroupState{

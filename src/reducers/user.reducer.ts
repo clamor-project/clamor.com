@@ -2,7 +2,7 @@ import {ISearchedUsersState} from '.'
 
 
 const initialState: ISearchedUsersState = {
-
+    
 }
 
 

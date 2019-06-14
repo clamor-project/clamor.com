@@ -14,7 +14,7 @@ const App: React.FC = () => {
       <div className="App">
         <NavComponent/>
           <Switch>
-            <Route path='/users' component={userComponent}/> 
+            <Route path='/profile' component={userComponent}/> 
           </Switch>
       </div>
       </BrowserRouter>
