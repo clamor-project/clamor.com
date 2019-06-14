@@ -1,29 +1,29 @@
 import React from "react";
 import { connect } from "react-redux";
 import { IState } from "../../reducers";
-import { RouteComponentProps } from "react-router";
+import { RouteComponentProps, withRouter } from "react-router";
 
 
 interface ICurrentUsersState{
-    
+
 }
 
 interface ICurrentUserProps extends RouteComponentProps{
-
+    match:any
 }
 
 
 class groupComponent extends React.Component<ICurrentUserProps, ICurrentUsersState>{
-    constructor(props){
-        super(props);
-        this.state = {
-            
-        }
+
+    state = {
+
     }
 
     render(){
         return(
-            <div></div>
+            <div>
+                <h2>This is a group {this.props.match.params.id}'s component</h2>
+            </div>
         )
     }   
         
@@ -31,7 +31,7 @@ class groupComponent extends React.Component<ICurrentUserProps, ICurrentUsersSta
 
 const mapStateToProps = (state:IState) =>{
     return{
-
+        groupData: state.CurrentGroup
     }
 
 }
@@ -40,4 +40,4 @@ const mapActionToProps = {
   
 }
 
-export default connect(mapStateToProps,mapActionToProps)(groupComponent)
+export default connect(mapStateToProps,mapActionToProps)(withRouter(groupComponent))

@@ -5,6 +5,7 @@ import { BrowserRouter, Switch, Route } from 'react-router-dom';
 import { store } from './store';
 import { NavComponent } from './components/nav/nav.component';
 import userComponent from './components/users/user.component';
+import groupsComponent from './components/groups/groups.component';
 
 const App: React.FC = () => {
   return (
@@ -15,6 +16,7 @@ const App: React.FC = () => {
         <NavComponent/>
           <Switch>
             <Route path='/users' component={userComponent}/> 
+            <Route path='/groups/:id' component={groupsComponent} />
           </Switch>
       </div>
       </BrowserRouter>
