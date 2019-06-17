@@ -1,4 +1,7 @@
 import React from 'react'
+import { IState } from '../../reducers';
+import { sendLogin } from '../../actions/login.action'
+import { connect } from 'react-redux';
 
 interface ISignInState {
     username: string
@@ -6,75 +9,33 @@ interface ISignInState {
     errorMessage: string
 }
 
-export class SignInComponent extends React.Component<any, ISignInState>{//first is props second is state
-    constructor(props){
-        super(props);
-        this.state = {
-            username: '',
-            password: '',
-            errorMessage: ''
-        }
+interface ISignInProps {
+    self: any
+    sendLogin: (username:string, password:string) => void
+}
+
+export class SignInComponent extends React.Component<ISignInProps, ISignInState>{//first is props second is state
+    
+    state = {
+        username: '',
+        password: '',
+        errorMessage: ''
     }
 
 
-    updateUsername = (event) => {
-        console.log(event)
+    updateField = (field:string) => (event) => {
         this.setState({
-            username: event.target.value
+            ...this.state,
+            [field]: event.target.value
         })
     }
-
-    updatePassword = (event)=>{
-        this.setState({
-            password: event.target.value
-        })
-    }
-
     
 
     login = async (event)=>{
         event.preventDefault()
-        console.log('trying to login')
-        const username = this.state.username
-        const password = this.state.password
-    
-        const credentials = {
-            username,
-            password
-        }
-    
-        try{
-    
-            const response = await fetch('http://localhost:5000/users/login', {
-                method: 'POST',
-                credentials: 'include',
-                body: JSON.stringify(credentials),
-                headers:{
-                    'content-type': 'application/json'
-                }
-            })
-    
-            console.log(response);
-    
-            if(response.status === 401){
-                this.setState({
-                    errorMessage:'Invalid Credentials'
-                })
-            } else if( response.status === 200){
-                //const user = await response.json()
-                this.props.history.push('/nested')
-                
-            } else {
-                document.getElementById('error-message').innerText = 'You Can\'t login right now'
-            }        
-        } catch(err){
-            console.log(err);        
-        }
+        this.props.sendLogin(this.state.username, this.state.password)
     }
 
-    componentDidMount(){
-        console.log(this.props)
-    }
 
     render(){
         return (
@@ -82,9 +43,9 @@ export class SignInComponent extends React.Component<any, ISignInState>{//first 
                 <img className="mb-4" src="/docs/4.3/assets/brand/bootstrap-solid.svg" alt="" width="72" height="72"/>
                 <h1 className="h3 mb-3 font-weight-normal">Please sign in</h1>
                 <label htmlFor="inputUsername" className="sr-only">Username</label>
-                <input type="text" id="inputUsername" className="form-control" value={this.state.username} onChange={this.updateUsername}placeholder="Username" required autoFocus/>
+                <input type="text" id="inputUsername" className="form-control" value={this.state.username} onChange={this.updateField('username')}placeholder="Username" required autoFocus/>
                 <label htmlFor="inputPassword" className="sr-only">Password</label>
-                <input type="password" id="inputPassword" className="form-control" value={this.state.password} onChange={this.updatePassword} placeholder="Password" required/>
+                <input type="password" id="inputPassword" className="form-control" value={this.state.password} onChange={this.updateField('password')} placeholder="Password" required/>
                 <p>{this.state.errorMessage}</p>
                 <button className="btn btn-lg btn-primary btn-block" type="submit">Sign in</button>
                 <p className="mt-5 mb-3 text-muted">&copy; 2017-2019</p>
@@ -92,3 +53,13 @@ export class SignInComponent extends React.Component<any, ISignInState>{//first 
         )
     }
 }
+
+const mapStateToProps = (state:IState) => ({
+    self: state.CurrentUser.self
+})
+
+const mapDispatchToProps = {
+    sendLogin
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(SignInComponent)

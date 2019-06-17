@@ -8,7 +8,7 @@ import userComponent from './components/users/user.component';
 import groupsComponent from './components/groups/groups.component';
 import groupSearchComponent from './components/groups/group-search/group-search.component';
 import GroupUsersComponent from './components/groups/group-users/group-users.component';
-import { SignInComponent } from './components/signin/signin.component';
+import SignInComponent from './components/signin/signin.component';
 
 const App: React.FC = () => {
   return (
