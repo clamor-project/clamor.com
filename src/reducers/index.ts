@@ -5,7 +5,7 @@ import { combineReducers } from "redux";
 import { SearchedGroupReducer } from "./group-search.reducer";
 
 export interface ICurrentUserState{
-
+    groups: any[]
 }
 
 export interface ICurrentGroupState{
