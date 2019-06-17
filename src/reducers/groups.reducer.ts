@@ -1,4 +1,5 @@
 import { ICurrentGroupState } from ".";
+import { GroupTypes } from "../actions/group.action";
 
 const initialState: ICurrentGroupState = {
 
@@ -6,5 +7,11 @@ const initialState: ICurrentGroupState = {
 
 
 export const CurrentGroupReducer = (state = initialState, action) => {
-    return state
+    switch (action.type) {
+        case GroupTypes.Set_Group:
+            return action.payload
+    
+        default:
+            return state
+    }
 }

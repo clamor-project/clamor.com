@@ -17,7 +17,7 @@ export interface ISearchedUsersState{
 }
 
 export interface ISearchedGroupsState{
-
+    groupList: any[]
 }
 
 //all the states we are following

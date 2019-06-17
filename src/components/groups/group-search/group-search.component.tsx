@@ -2,28 +2,51 @@ import React from "react";
 import { connect } from "react-redux";
 import { IState } from "../../../reducers";
 import { RouteComponentProps } from "react-router";
+import { getAllGroups } from "../../../actions/group.action";
 
 interface IGroupSearchState{
     
 }
 
 interface ICurrentUserProps extends RouteComponentProps{
-
+    searchGroups: () => void
+    groupList: any[]
 }
 
 
 class groupSearchComponent extends React.Component<ICurrentUserProps, IGroupSearchState>{
-    constructor(props){
-        super(props);
-        this.state = {
-            
-        }
+
+    handleClick = id => () => {
+        console.log(id)
+        this.props.history.push(`/groups/${id}`)
     }
 
+    componentDidMount() {
+        this.props.searchGroups()
+    }
     
     render(){
         return(
-            <div></div>
+            <div>
+                {this.props.groupList.length && <table>
+                    <thead>
+                        <tr>
+                            <th>Name</th>
+                            <th>Description</th>
+                            <th>See Page</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {this.props.groupList.map(group => (
+                            <tr key={group.id}>
+                                <td>{group.name}</td>
+                                <td>{group.description}</td>
+                                <td><button onClick={this.handleClick(group.id)}>go</button></td>
+                            </tr>
+                        ))}
+                    </tbody>
+                </table>}
+            </div>
         )
     }
         
@@ -31,10 +54,12 @@ class groupSearchComponent extends React.Component<ICurrentUserProps, IGroupSear
 
 const mapStateToProps = (state:IState) =>{
     return{
+        groupList: state.GroupFinder.groupList
     }
 }
 
 const mapActionToProps = {
+    searchGroups: getAllGroups
 }
 
 export default connect(mapStateToProps,mapActionToProps)(groupSearchComponent)
