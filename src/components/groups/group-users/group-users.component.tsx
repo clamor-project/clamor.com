@@ -26,6 +26,10 @@ class GroupUsersComponent extends React.Component<ICurrentUserProps, IGroupUsers
         this.props.getUserGroups(1)
     }
 
+    handleClick = (id:number) => () => {
+        this.props.history.push('/groups/' + id)
+    }
+
     // needed to complete: saved state including the current user
     // changing the componentDidMount to use the current user's id
     // some server side logic to identify the user's id dirrectly
@@ -39,6 +43,9 @@ class GroupUsersComponent extends React.Component<ICurrentUserProps, IGroupUsers
                             <h6>{group.role.roleName}</h6>
                             <p>{group.group.description}</p>
                         </div>
+                        {group.role.roleName !== 'banned' && <button onClick={this.handleClick(group.group.id)}>
+                            go
+                        </button>}
                     </div>)}
                 </div>}
             </div>
