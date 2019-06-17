@@ -2,6 +2,7 @@ import React from "react";
 import { connect } from "react-redux";
 import { IState } from "../../reducers";
 import { RouteComponentProps, withRouter } from "react-router";
+import { getGroupById } from '../../actions/group.action'
 
 
 interface ICurrentUsersState{
@@ -10,6 +11,8 @@ interface ICurrentUsersState{
 
 interface ICurrentUserProps extends RouteComponentProps{
     match:any
+    groupData:any
+    getGroupById:(id:number) => void
 }
 
 
@@ -19,10 +22,15 @@ class groupComponent extends React.Component<ICurrentUserProps, ICurrentUsersSta
 
     }
 
+    componentDidMount(){
+        this.props.getGroupById(+this.props.match.params.id)
+    }
+
     render(){
         return(
             <div>
-                <h2>This is a group {this.props.match.params.id}'s component</h2>
+                <h2>{this.props.groupData.name}</h2>
+                <h4>{this.props.groupData.description}</h4>
             </div>
         )
     }   
@@ -37,7 +45,7 @@ const mapStateToProps = (state:IState) =>{
 }
 
 const mapActionToProps = {
-  
+  getGroupById
 }
 
 export default connect(mapStateToProps,mapActionToProps)(withRouter(groupComponent))
