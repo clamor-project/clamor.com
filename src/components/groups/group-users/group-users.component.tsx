@@ -4,35 +4,25 @@ import { IState } from "../../../reducers";
 import { RouteComponentProps } from "react-router";
 import { getUserGroups } from '../../../actions/user.action'
 //For the groups that the user is in so they can see or drop groups
-interface IGroupUsersState {
-
-}
 
 interface ICurrentUserProps extends RouteComponentProps {
     groups: any[]
-    getUserGroups: (id: number) => void
+    getUserGroups: (id:number) => void
+    selfId: number
 }
 
 
-class GroupUsersComponent extends React.Component<ICurrentUserProps, IGroupUsersState>{
-    constructor(props) {
-        super(props);
-        this.state = {
-
-        }
-    }
+class GroupUsersComponent extends React.PureComponent<ICurrentUserProps>{
 
     componentDidMount() {
-        this.props.getUserGroups(1)
+        this.props.selfId && this.props.getUserGroups(this.props.selfId)
     }
 
     handleClick = (id:number) => () => {
         this.props.history.push('/groups/' + id)
     }
 
-    // needed to complete: saved state including the current user
-    // changing the componentDidMount to use the current user's id
-    // some server side logic to identify the user's id dirrectly
+    // needed: some server side logic to identify the user's id dirrectly
     render() {
         return (
             <div>
@@ -56,7 +46,8 @@ class GroupUsersComponent extends React.Component<ICurrentUserProps, IGroupUsers
 
 const mapStateToProps = (state: IState) => {
     return {
-        groups: state.CurrentUser.groups
+        groups: state.CurrentUser.groups,
+        selfId: state.CurrentUser.self.id
     }
 }
 
