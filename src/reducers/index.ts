@@ -3,13 +3,16 @@ import { SearchedUserReducer } from "./user.reducer";
 import { CurrentGroupReducer } from "./groups.reducer";
 import { combineReducers } from "redux";
 import { SearchedGroupReducer } from "./group-search.reducer";
+import { IUser } from "../models/User";
+import { IUsergroup } from "../models/Usergroup";
+import { IGroup } from "../models/Group";
 
 export interface ICurrentUserState{
-    groups: any[],
-    self: any
+    groups: IUsergroup[],
+    self: IUser
 }
 
-export interface ICurrentGroupState{
+export interface ICurrentGroupState extends IGroup{
 
 }
 
@@ -18,7 +21,7 @@ export interface ISearchedUsersState{
 }
 
 export interface ISearchedGroupsState{
-    groupList: any[]
+    groupList: IGroup[]
 }
 
 //all the states we are following

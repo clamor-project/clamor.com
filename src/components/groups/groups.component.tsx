@@ -3,6 +3,7 @@ import { connect } from "react-redux";
 import { IState } from "../../reducers";
 import { RouteComponentProps, withRouter } from "react-router";
 import { getGroupById } from '../../actions/group.action'
+import { IGroup } from "../../models/Group";
 
 
 interface ICurrentUsersState{
@@ -11,7 +12,7 @@ interface ICurrentUsersState{
 
 interface ICurrentUserProps extends RouteComponentProps{
     match:any
-    groupData:any
+    groupData:IGroup
     getGroupById:(id:number) => void
 }
 

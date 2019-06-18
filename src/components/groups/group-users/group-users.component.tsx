@@ -3,10 +3,11 @@ import { connect } from "react-redux";
 import { IState } from "../../../reducers";
 import { RouteComponentProps } from "react-router";
 import { getUserGroups } from '../../../actions/user.action'
+import { IUsergroup } from "../../../models/Usergroup";
 //For the groups that the user is in so they can see or drop groups
 
 interface ICurrentUserProps extends RouteComponentProps {
-    groups: any[]
+    groups: IUsergroup[]
     getUserGroups: (id:number) => void
     selfId: number
 }

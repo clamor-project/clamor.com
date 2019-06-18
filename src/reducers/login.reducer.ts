@@ -4,7 +4,12 @@ import { loginTypes } from "../actions/login.action";
 
 const initialState: ICurrentUserState = {
     groups: [],
-    self: {}
+    self: {
+        id:0,
+        username:'',
+        email:'',
+        dateOfBirth: '2000-01-01'
+    }
 }
 
 
