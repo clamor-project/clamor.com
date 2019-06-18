@@ -3,6 +3,7 @@ import { connect } from "react-redux";
 import { IState } from "../../../reducers";
 import { RouteComponentProps } from "react-router";
 import { getAllGroups } from "../../../actions/group.action";
+import { IGroup } from "../../../models/Group";
 
 interface IGroupSearchState{
     
@@ -10,7 +11,7 @@ interface IGroupSearchState{
 
 interface ICurrentUserProps extends RouteComponentProps{
     searchGroups: () => void
-    groupList: any[]
+    groupList: IGroup[]
 }
 
 

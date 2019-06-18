@@ -2,7 +2,10 @@ import { ICurrentGroupState } from ".";
 import { GroupTypes } from "../actions/group.action";
 
 const initialState: ICurrentGroupState = {
-
+    id:0,
+    name:'',
+    description:'',
+    private:false
 }
 
 
