@@ -2,6 +2,7 @@ import React from 'react'
 import { IState } from '../../reducers';
 import { sendLogin } from '../../actions/login.action'
 import { connect } from 'react-redux';
+import { RouteComponentProps } from 'react-router';
 
 interface ISignInState {
     username: string
@@ -9,9 +10,9 @@ interface ISignInState {
     errorMessage: string
 }
 
-interface ISignInProps {
+interface ISignInProps extends RouteComponentProps {
     self: any
-    sendLogin: (username:string, password:string) => void
+    sendLogin: (username:string, password:string, history:any) => void
 }
 
 export class SignInComponent extends React.Component<ISignInProps, ISignInState>{//first is props second is state
@@ -33,7 +34,7 @@ export class SignInComponent extends React.Component<ISignInProps, ISignInState>
 
     login = async (event)=>{
         event.preventDefault()
-        this.props.sendLogin(this.state.username, this.state.password)
+        this.props.sendLogin(this.state.username, this.state.password, this.props.history)
     }
 
 

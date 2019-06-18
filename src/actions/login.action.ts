@@ -6,7 +6,7 @@ export const loginTypes ={
     Set_Current_User: 'SET_CURRENT_USER'
 }
 
-export const sendLogin = (username:string, password:string) => async dispatch => {
+export const sendLogin = (username:string, password:string, history:any) => async dispatch => {
     try {
         const response = await loginClient.post('', {
             username,
@@ -17,6 +17,7 @@ export const sendLogin = (username:string, password:string) => async dispatch =>
                 type: loginTypes.Set_Current_User,
                 payload: response.data
             })
+            history.push('/groups')
         }
     } catch (error) {
         console.log(error)
