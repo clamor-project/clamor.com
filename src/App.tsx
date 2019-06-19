@@ -14,17 +14,17 @@ const App: React.FC = () => {
   return (
     <Provider store={store}>
       <BrowserRouter>
-    
-      <div className="App">
-        <NavComponent/>
+
+        <div className="App">
+          <NavComponent />
           <Switch>
-            <Route path='/users' component={userComponent}/> 
+            <Route path='/users' component={userComponent} />
             <Route path='/browse' component={groupSearchComponent} />
             <Route exact path="/groups" component={GroupUsersComponent} />
             <Route path='/groups/:id' component={groupsComponent} />
-            <Route path='/login' component={SignInComponent}/>
+            <Route path='/login' component={SignInComponent} />
           </Switch>
-      </div>
+        </div>
       </BrowserRouter>
     </Provider>
 
