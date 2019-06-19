@@ -1,4 +1,5 @@
 import { loginClient } from '../axios/login-client'
+import { userClient } from '../axios/user-client';
 
 export const loginTypes ={
     New_User: 'NEW_USER_LOGGED_IN',
@@ -21,5 +22,27 @@ export const sendLogin = (username:string, password:string, history:any) => asyn
         }
     } catch (error) {
         console.log(error)
+    }
+}
+
+export const sendRegistration = (username:string, password:string, email:string, dateOfBirth:string, history:any) => async dispatch => {
+    try {
+        const response = await userClient.post('register', {
+            dateOfBirth,
+            email,
+            password,
+            username,
+            id: 0
+        })
+
+        if(response.status === 200) {
+            dispatch({
+                type: loginTypes.Set_Current_User,
+                payload: response.data
+            })
+            history.push('/browse')
+        }
+    } catch (error) {
+        
     }
 }
