@@ -4,4 +4,5 @@ export interface IUser {
   username:string
   email:string | null
   dateOfBirth:Date | null | string | number
+  password?: string
 }
