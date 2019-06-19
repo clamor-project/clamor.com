@@ -43,6 +43,7 @@ export const sendRegistration = (username:string, password:string, email:string,
             history.push('/browse')
         }
     } catch (error) {
+        console.log(error);
         
     }
 }
