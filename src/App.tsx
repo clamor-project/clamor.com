@@ -9,6 +9,7 @@ import groupsComponent from './components/groups/groups.component';
 import groupSearchComponent from './components/groups/group-search/group-search.component';
 import GroupUsersComponent from './components/groups/group-users/group-users.component';
 import SignInComponent from './components/signin/signin.component';
+import FriendsPage from './components/friends/friends';
 
 const App: React.FC = () => {
   return (
@@ -23,6 +24,7 @@ const App: React.FC = () => {
             <Route exact path="/groups" component={GroupUsersComponent} />
             <Route path='/groups/:id' component={groupsComponent} />
             <Route path='/login' component={SignInComponent} />
+            <Route path='/friends' component={FriendsPage} />
           </Switch>
         </div>
       </BrowserRouter>

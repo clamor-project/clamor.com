@@ -7,7 +7,7 @@ const initialState:IFriendState = {
 }
 
 export const FriendReducer = (state = initialState, action) => {
-  switch (action.payload) {
+  switch (action.type) {
     case loginTypes.Set_Mutual_Friends:
       return {
         ...state,
