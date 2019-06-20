@@ -1,10 +1,20 @@
 import { ISearchedGroupsState } from ".";
+import { GroupTypes } from "../actions/group.action";
 
 const initialState: ISearchedGroupsState = {
-
+    groupList: []
 }
 
 
 export const SearchedGroupReducer = (state = initialState, action) => {
-    return state
+
+    switch (action.type) {
+        case GroupTypes.Set_Groups:
+            return {
+                groupList: action.payload
+            }
+    
+        default:
+            return state
+    }
 }

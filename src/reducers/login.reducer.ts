@@ -1,16 +1,31 @@
 import { ICurrentUserState } from ".";
+import { userTypes } from "../actions/user.action";
+import { loginTypes } from "../actions/login.action";
 
 const initialState: ICurrentUserState = {
-    currentUser: {
-        id: 0,
-        username: 'Trying',
-        password: 'Password',
-        dob: '1997-10-03',
-        email: 'TryingHard@Jims.com'
+    groups: [],
+    self: {
+        id:0,
+        username:'',
+        email:'',
+        dateOfBirth: '2000-01-01'
     }
 }
 
 
 export const CurrentUserReducer = (state = initialState, action) => {
-    return state
+    switch (action.type) {
+        case userTypes.Set_User_Groups:
+            return {
+                ...state,
+                groups: action.payload
+            }
+        case loginTypes.Set_Current_User:
+            return {
+                ...state,
+                self: action.payload
+            }
+        default:
+            return state
+    }
 }

@@ -1,4 +1,49 @@
+import { loginClient } from '../axios/login-client'
+import { userClient } from '../axios/user-client';
+
 export const loginTypes ={
     New_User: 'NEW_USER_LOGGED_IN',
-    Not_Found: 'USER_NOT_FOUND'
+    Not_Found: 'USER_NOT_FOUND',
+    Set_Current_User: 'SET_CURRENT_USER'
+}
+
+export const sendLogin = (username:string, password:string, history:any) => async dispatch => {
+    try {
+        const response = await loginClient.post('', {
+            username,
+            password
+        })
+        if(response.status === 200 && response.data.id) {
+            dispatch({
+                type: loginTypes.Set_Current_User,
+                payload: response.data
+            })
+            history.push('/groups')
+        }
+    } catch (error) {
+        console.log(error)
+    }
+}
+
+export const sendRegistration = (username:string, password:string, email:string, dateOfBirth:string, history:any) => async dispatch => {
+    try {
+        const response = await userClient.post('register', {
+            dateOfBirth,
+            email,
+            password,
+            username,
+            id: 0
+        })
+
+        if(response.status === 200) {
+            dispatch({
+                type: loginTypes.Set_Current_User,
+                payload: response.data
+            })
+            history.push('/browse')
+        }
+    } catch (error) {
+        console.log(error);
+        
+    }
 }
