@@ -7,7 +7,6 @@ import { IUsergroup } from "../../../models/Usergroup";
 
 interface ICurrentUserProps extends RouteComponentProps {
     groups: IUsergroup[]
-    getUserGroups: (id:number) => void
     selfId: number
 }
 
