@@ -2,7 +2,6 @@ import React from "react";
 import { connect } from "react-redux";
 import { IState } from "../../../reducers";
 import { RouteComponentProps } from "react-router";
-import { getUserGroups } from '../../../actions/user.action'
 import { IUsergroup } from "../../../models/Usergroup";
 //For the groups that the user is in so they can see or drop groups
 
@@ -15,9 +14,6 @@ interface ICurrentUserProps extends RouteComponentProps {
 
 class GroupUsersComponent extends React.PureComponent<ICurrentUserProps>{
 
-    componentDidMount() {
-        this.props.selfId && this.props.getUserGroups(this.props.selfId)
-    }
 
     handleClick = (id:number) => () => {
         this.props.history.push('/groups/' + id)
@@ -53,7 +49,6 @@ const mapStateToProps = (state: IState) => {
 }
 
 const mapActionToProps = {
-    getUserGroups
 }
 
 export default connect(mapStateToProps, mapActionToProps)(GroupUsersComponent)

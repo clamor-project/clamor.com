@@ -1,5 +1,4 @@
 import { ICurrentUserState } from ".";
-import { userTypes } from "../actions/user.action";
 import { loginTypes } from "../actions/login.action";
 
 const initialState: ICurrentUserState = {
@@ -15,7 +14,7 @@ const initialState: ICurrentUserState = {
 
 export const CurrentUserReducer = (state = initialState, action) => {
     switch (action.type) {
-        case userTypes.Set_User_Groups:
+        case loginTypes.Set_User_Groups:
             return {
                 ...state,
                 groups: action.payload
