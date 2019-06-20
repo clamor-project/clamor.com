@@ -1,4 +1,6 @@
 import { groupClient } from "../axios/group-client";
+import { IUser } from "../models/User";
+import { getInformation } from "./login.action";
 
 export const GroupTypes = {
     Not_Found: 'GROUP_NOT_FOUND',
@@ -28,6 +30,17 @@ export const getAllGroups = () => async dispatch => {
                 type: GroupTypes.Set_Groups,
                 payload: response.data
             })
+        }
+    } catch (error) {
+        console.log(error)
+    }
+}
+
+export const joinGroup = (user:IUser, groupId:number) => async dispatch => {
+    try {
+        const response = await groupClient.post('/join/' + groupId, user)
+        if(response.status === 200) {
+            getInformation(user.id, dispatch)
         }
     } catch (error) {
         console.log(error)
