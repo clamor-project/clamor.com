@@ -1,6 +1,7 @@
 import React from 'react';
 import clamor from '../../assets/clamor.png';
-import { Navbar, NavbarBrand, NavbarToggler, Collapse, Nav, NavItem, NavLink } from 'reactstrap';
+import { Navbar, NavbarBrand, NavbarToggler, Collapse, Nav, NavItem, Button } from 'reactstrap';
+import { Link } from 'react-router-dom';
 
 interface INavcomponentState {
   isOpen: boolean
@@ -25,22 +26,34 @@ export class NavComponent extends React.Component<any, INavcomponentState> {
         <Collapse isOpen={this.state.isOpen}>
           <Nav className="ml-auto" navbar>
             <NavItem>
-              <NavLink href="/home">Home</NavLink>
+              <Link to="/home">
+                <Button color="primary" size="sm">Home</Button>
+              </Link>
             </NavItem>
             <NavItem>
-              <NavLink href="/login">Sign In</NavLink>
+              <Link to="/login">
+                <Button color="primary" size="sm">Sign In</Button>
+              </Link>
             </NavItem>
             <NavItem>
-              <NavLink href="/profile">Profile</NavLink>
+              <Link to="/profile">
+                <Button color="primary" size="sm">Profile</Button>
+              </Link>
             </NavItem>
             <NavItem>
-              <NavLink href="/friends">Friends</NavLink>
+              <Link to="/friends">
+                <Button color="primary" size="sm">Friends</Button>
+              </Link>
             </NavItem>
             <NavItem>
-              <NavLink href="/groups">Groups</NavLink>
+              <Link to="/groups">
+                <Button color="primary" size="sm">Groups</Button>
+              </Link>
             </NavItem>
             <NavItem>
-              <NavLink href="/browse">Browse Groups</NavLink>
+              <Link to="/browse">
+                <Button color="primary" size="sm">Browse Groups</Button>
+              </Link>
             </NavItem>
           </Nav>
         </Collapse>
