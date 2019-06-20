@@ -10,7 +10,7 @@ export const loginTypes = {
     Set_User_Groups: 'SET_USER_GROUPS'
 }
 
-const getInformation = (id: number, dispatch: any) => {
+export const getInformation = (id: number, dispatch: any) => {
     userClient.get('/groups/' + id).then(response => {
         dispatch({
             type: loginTypes.Set_User_Groups,
