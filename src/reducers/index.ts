@@ -18,7 +18,8 @@ export interface ICurrentGroupState extends IGroup{
 }
 
 export interface ISearchedUsersState{
-
+    manyUsers: IUser[]
+    selectUser: IUser
 }
 
 export interface ISearchedGroupsState{

@@ -2,11 +2,19 @@ import React from 'react';
 import clamor from '../../assets/clamor.png';
 import { Navbar, NavbarBrand, NavbarToggler, Collapse, Nav, NavItem, Button } from 'reactstrap';
 import { Link } from 'react-router-dom';
+import { IState } from '../../reducers';
+import { connect } from 'react-redux';
+import { IUser } from '../../models/User';
 
 interface INavcomponentState {
   isOpen: boolean
 }
-export class NavComponent extends React.Component<any, INavcomponentState> {
+
+interface INavcomponentProps {
+  currentUser: IUser
+}
+
+export class NavComponent extends React.Component<INavcomponentProps, INavcomponentState> {
 
   state = {
     isOpen: true
@@ -36,7 +44,7 @@ export class NavComponent extends React.Component<any, INavcomponentState> {
               </Link>
             </NavItem>
             <NavItem>
-              <Link to="/profile">
+              <Link to={"/profile/"  + this.props.currentUser.id.toString()}>
                 <Button color="primary" size="sm">Profile</Button>
               </Link>
             </NavItem>
@@ -61,3 +69,14 @@ export class NavComponent extends React.Component<any, INavcomponentState> {
     );
   }
 }
+
+const mapStateToProps = (state:IState) =>{
+  return{
+    currentUser: state.CurrentUser.self
+  }
+}
+
+const mapActionToProps = {
+}
+
+export default connect(mapStateToProps,mapActionToProps)(NavComponent)

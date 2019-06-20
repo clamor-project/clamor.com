@@ -1,8 +1,9 @@
 import React from "react";
 import { connect } from "react-redux";
 import { IState } from "../../reducers";
-import { RouteComponentProps } from "react-router";
+import { RouteComponentProps, withRouter } from "react-router";
 import { IUser } from "../../models/User";
+import { getUserById } from "../../actions/user.action";
 
 //The users page, can be seen by others but can only be edited by the user
 
@@ -17,23 +18,27 @@ interface ICurrentUsersState{
 interface ICurrentUserProps extends RouteComponentProps{
     match: any
     currentUser: IUser
+    profileFocus: IUser
+    getUserById: (id:number) => void
 
 }
 
 
-class userComponent extends React.Component<ICurrentUserProps, ICurrentUsersState>{
+class UserComponent extends React.Component<ICurrentUserProps, ICurrentUsersState>{
     state = {
             isUsernameEditable: false,
             isPasswordEditable: false,
             isEmailEditable: false,
-            isDobEditable: false
+            isDobEditable: false,
     }
 
-    
+    componentDidMount(){
+        this.props.getUserById(+this.props.match.params.id)
+    }
 
     //Function to have this page editable 
     isUser(){
-        if(+this.props.match.params.id == this.props.currentUser.id){
+        if(this.props.currentUser === this.props.profileFocus){
             return true;
         }else{
             return false;
@@ -87,6 +92,7 @@ class userComponent extends React.Component<ICurrentUserProps, ICurrentUsersStat
         console.log(this.state.isPasswordEditable)
         console.log(this.state.isEmailEditable)
         console.log(this.state.isDobEditable)
+        console.log()
 
         
 
@@ -100,7 +106,7 @@ class userComponent extends React.Component<ICurrentUserProps, ICurrentUsersStat
                                 <tr>
                                     <th>Username</th>
                                     <td>
-                                        <input type='text' value={this.props.currentUser.username}/>  
+                                        <input type='text' value={this.props.profileFocus.username}/>  
                                     </td>
                                     <td>
                                     <button type="submit" onClick={()=>{this.canEditUsername(false)}}>Submit</button>
@@ -111,7 +117,7 @@ class userComponent extends React.Component<ICurrentUserProps, ICurrentUsersStat
                                 <tr>
                                     <th>Username</th>
                                     <td>
-                                        {this.props.currentUser.username}
+                                        {this.props.profileFocus.username}
                                     </td>
                                     <td>
                                         <button onClick={()=>{this.canEditUsername(true)}}>Edit</button>
@@ -123,7 +129,7 @@ class userComponent extends React.Component<ICurrentUserProps, ICurrentUsersStat
                                 <tr>
                                     <th>Password</th>
                                     <td>
-                                        <input type='text' value={this.props.currentUser.password}/>  
+                                        <input type='text' value={this.props.profileFocus.password}/>  
                                     </td>
                                     <td>
                                     <button onClick={()=>{this.canEditPassword(false)}}>Submit</button>
@@ -134,7 +140,7 @@ class userComponent extends React.Component<ICurrentUserProps, ICurrentUsersStat
                                 <tr>
                                     <th>Password</th>
                                     <td>
-                                        {this.props.currentUser.password}
+                                        {this.props.profileFocus.password}
                                     </td>
                                     <td>
                                         <button onClick={()=>{this.canEditPassword(true)}}>Edit</button>
@@ -146,7 +152,7 @@ class userComponent extends React.Component<ICurrentUserProps, ICurrentUsersStat
                                 <tr>
                                     <th>Email</th>
                                     <td>
-                                        <input type='text' value={this.props.currentUser.email}/>  
+                                        <input type='text' value={this.props.profileFocus.email}/>  
                                     </td>
                                     <td>
                                     <button onClick={()=>{this.canEditEmail(false)}}>Edit</button>
@@ -157,7 +163,7 @@ class userComponent extends React.Component<ICurrentUserProps, ICurrentUsersStat
                                 <tr>
                                     <th>Email</th>
                                      <td>
-                                        {this.props.currentUser.email}
+                                        {this.props.profileFocus.email}
                                     </td>
                                     <td>
                                         <button onClick={()=>{this.canEditEmail(true)}}>Edit</button>
@@ -169,7 +175,7 @@ class userComponent extends React.Component<ICurrentUserProps, ICurrentUsersStat
                                 <tr>
                                     <th>Birthday</th>
                                     <td>
-                                        <input type='date' value={this.props.currentUser.dateOfBirth as string}/>  
+                                        <input type='date' value={this.props.profileFocus.dateOfBirth.toString()}/>  
                                     </td>
                                     <td>
                                         <button onClick={()=>{this.canEditDob(false)}}>Edit</button>
@@ -180,7 +186,7 @@ class userComponent extends React.Component<ICurrentUserProps, ICurrentUsersStat
                                 <tr>
                                     <th>Birthday</th>
                                     <td>
-                                        {this.props.currentUser.dateOfBirth as string}
+                                        {this.props.profileFocus.dateOfBirth}
                                     </td>
                                     <td>
                                         <button onClick={()=>{this.canEditDob(true)}}>Edit</button>
@@ -205,25 +211,25 @@ class userComponent extends React.Component<ICurrentUserProps, ICurrentUsersStat
                             <tr>
                                 <th>Username</th>
                                 <td>
-                                    {this.props.currentUser.username}
+                                    {this.props.profileFocus.username}
                                 </td>
                             </tr>
                             <tr>
                                 <th>Password</th>
                                 <td>
-                                    {this.props.currentUser.password}
+                                    {this.props.profileFocus.password}
                                 </td>
                             </tr>
                             <tr>
                                 <th>Email</th>
                                 <td>
-                                    {this.props.currentUser.email}
+                                    {this.props.profileFocus.email}
                                 </td>
                             </tr>
                             <tr>
                                 <th>Birthday</th>
                                 <td>
-                                    {this.props.currentUser.dateOfBirth as string}
+                                    {new Date(this.props.profileFocus.dateOfBirth).toDateString()}
                                 </td>
                             </tr>
                         </tbody>
@@ -239,11 +245,13 @@ class userComponent extends React.Component<ICurrentUserProps, ICurrentUsersStat
 
 const mapStateToProps = (state:IState) =>{
     return{
-        currentUser: state.CurrentUser.self
+        currentUser: state.CurrentUser.self,
+        profileFocus: state.UserFinder.selectUser
     }
 }
 
 const mapActionToProps = {
+    getUserById
 }
 
-export default connect(mapStateToProps,mapActionToProps)(userComponent)
+export default connect(mapStateToProps,mapActionToProps)(withRouter(UserComponent))

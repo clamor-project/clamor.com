@@ -3,7 +3,7 @@ import './App.css';
 import { Provider } from 'react-redux';
 import { BrowserRouter, Switch, Route } from 'react-router-dom';
 import { store } from './store';
-import { NavComponent } from './components/nav/nav.component';
+import NavComponent from './components/nav/nav.component';
 import userComponent from './components/users/user.component';
 import groupsComponent from './components/groups/groups.component';
 import groupSearchComponent from './components/groups/group-search/group-search.component';
@@ -18,7 +18,7 @@ const App: React.FC = () => {
         <div className="App">
           <NavComponent />
           <Switch>
-            <Route path='/profile' component={userComponent} />
+            <Route path='/profile/:id' component={userComponent} />
             <Route path='/browse' component={groupSearchComponent} />
             <Route exact path="/groups" component={GroupUsersComponent} />
             <Route path='/groups/:id' component={groupsComponent} />
