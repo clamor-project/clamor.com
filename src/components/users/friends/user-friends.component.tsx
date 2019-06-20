@@ -7,12 +7,12 @@ interface IFriendsState{
     
 }
 
-interface ICurrentUserProps extends RouteComponentProps{
+interface ICurrentFriendProps extends RouteComponentProps{
 
 }
 
 
-class friendsComponent extends React.Component<ICurrentUserProps, IFriendsState>{
+class friendsComponent extends React.Component<ICurrentFriendProps, IFriendsState>{
     constructor(props){
         super(props);
         this.state = {
@@ -23,7 +23,11 @@ class friendsComponent extends React.Component<ICurrentUserProps, IFriendsState>
     
     render(){
         return(
-            <div></div>
+            <div>
+                <h2>Friend Requests</h2>
+                
+                <h2>Friends</h2>
+            </div>
         )
     }
         

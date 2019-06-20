@@ -18,7 +18,7 @@ const App: React.FC = () => {
         <div className="App">
           <NavComponent />
           <Switch>
-            <Route path='/users' component={userComponent} />
+            <Route path='/profile' component={userComponent} />
             <Route path='/browse' component={groupSearchComponent} />
             <Route exact path="/groups" component={GroupUsersComponent} />
             <Route path='/groups/:id' component={groupsComponent} />

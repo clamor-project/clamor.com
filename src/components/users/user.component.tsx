@@ -2,7 +2,7 @@ import React from "react";
 import { connect } from "react-redux";
 import { IState } from "../../reducers";
 import { RouteComponentProps } from "react-router";
-import { user } from "../../models/user";
+import { IUser } from "../../models/User";
 
 //The users page, can be seen by others but can only be edited by the user
 
@@ -15,7 +15,8 @@ interface ICurrentUsersState{
 }
 
 interface ICurrentUserProps extends RouteComponentProps{
-    currentUser: user
+    match: any
+    currentUser: IUser
 
 }
 
@@ -32,7 +33,11 @@ class userComponent extends React.Component<ICurrentUserProps, ICurrentUsersStat
 
     //Function to have this page editable 
     isUser(){
-        return true //always false
+        if(+this.props.match.params.id == this.props.currentUser.id){
+            return true;
+        }else{
+            return false;
+        }
     }
 
     //fucntion to know if a section is being edited
@@ -164,7 +169,7 @@ class userComponent extends React.Component<ICurrentUserProps, ICurrentUsersStat
                                 <tr>
                                     <th>Birthday</th>
                                     <td>
-                                        <input type='date' value={this.props.currentUser.dob}/>  
+                                        <input type='date' value={this.props.currentUser.dateOfBirth as string}/>  
                                     </td>
                                     <td>
                                         <button onClick={()=>{this.canEditDob(false)}}>Edit</button>
@@ -175,7 +180,7 @@ class userComponent extends React.Component<ICurrentUserProps, ICurrentUsersStat
                                 <tr>
                                     <th>Birthday</th>
                                     <td>
-                                        {this.props.currentUser.dob}
+                                        {this.props.currentUser.dateOfBirth as string}
                                     </td>
                                     <td>
                                         <button onClick={()=>{this.canEditDob(true)}}>Edit</button>
@@ -186,6 +191,10 @@ class userComponent extends React.Component<ICurrentUserProps, ICurrentUsersStat
                             </tbody>
                         </table>
                     </form>
+
+                    <h2></h2>
+                    {/*where to pu the list of friends*/}
+                    
                 </div>
             )
         } else {
@@ -214,11 +223,13 @@ class userComponent extends React.Component<ICurrentUserProps, ICurrentUsersStat
                             <tr>
                                 <th>Birthday</th>
                                 <td>
-                                    {this.props.currentUser.dob}
+                                    {this.props.currentUser.dateOfBirth as string}
                                 </td>
                             </tr>
                         </tbody>
                     </table>
+
+                    {/*where to put the list of friends*/}
                 </div>
             )
         }
@@ -228,7 +239,7 @@ class userComponent extends React.Component<ICurrentUserProps, ICurrentUsersStat
 
 const mapStateToProps = (state:IState) =>{
     return{
-        currentUser: state.CurrentUser.currentUser
+        currentUser: state.CurrentUser.self
     }
 }
 
