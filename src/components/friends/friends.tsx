@@ -3,14 +3,25 @@ import { connect } from 'react-redux';
 import { IState } from '../../reducers';
 import { Table } from 'reactstrap';
 import { IUser } from '../../models/User';
+import { makeFriending, abandonFriending } from '../../actions/friending.action'
 
 interface IFriendsPageProps {
   mutualFriends: IUser[]
   requests: IUser[]
+  self: IUser
+  makeFriending: (userId:number, targetId:number) => void
+  abandonFriending: (userId:number, targetId:number) => void
 }
 
 export class FriendsPage extends PureComponent<IFriendsPageProps> {
 
+  handleAccept = (id:number) => () => {
+    this.props.makeFriending(this.props.self.id, id)
+  }
+
+  handleReject = (id:number) => () => {
+    this.props.abandonFriending(id, this.props.self.id)
+  }
 
   render() {
     return (
@@ -45,8 +56,8 @@ export class FriendsPage extends PureComponent<IFriendsPageProps> {
             <tbody>
               {this.props.requests.map(request => <tr key={request.id}>
                 <td>{request.username}</td>
-                <td><button>friend</button></td>
-                <td><button>ignore</button></td>
+                <td><button onClick={this.handleAccept(request.id)}>friend</button></td>
+                <td><button onClick={this.handleReject(request.id)}>ignore</button></td>
               </tr>)}
             </tbody>
           </Table>
@@ -59,7 +70,13 @@ export class FriendsPage extends PureComponent<IFriendsPageProps> {
 
 const mapStateToProps = (state: IState) => ({
   mutualFriends: state.FriendState.mutualFriends,
-  requests: state.FriendState.friendRequests
+  requests: state.FriendState.friendRequests,
+  self: state.CurrentUser.self
 })
 
-export default connect(mapStateToProps)(FriendsPage)
+const mapDispatchToProps = {
+  makeFriending,
+  abandonFriending
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(FriendsPage)
