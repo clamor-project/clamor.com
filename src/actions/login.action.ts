@@ -1,23 +1,56 @@
 import { loginClient } from '../axios/login-client'
 import { userClient } from '../axios/user-client';
 
-export const loginTypes ={
+export const loginTypes = {
     New_User: 'NEW_USER_LOGGED_IN',
     Not_Found: 'USER_NOT_FOUND',
-    Set_Current_User: 'SET_CURRENT_USER'
+    Set_Current_User: 'SET_CURRENT_USER',
+    Set_Mutual_Friends: 'SET_MUTUAL_FRIENDS',
+    Set_Friend_Requests: 'SET_FRIEND_REQUESTS',
+    Set_User_Groups: 'SET_USER_GROUPS'
 }
 
-export const sendLogin = (username:string, password:string, history:any) => async dispatch => {
+const getInformation = (id: number, dispatch: any) => {
+    userClient.get('/groups/' + id).then(response => {
+        dispatch({
+            type: loginTypes.Set_User_Groups,
+            payload: response.data
+        })
+    }).catch(error => {
+        console.log(error);
+    })
+    userClient.get('/friends/' + id).then(response => {
+        dispatch({
+            type: loginTypes.Set_Mutual_Friends,
+            payload: response.data
+        })
+    }).catch(error => {
+        console.log(error);
+    })
+    userClient.get('/friends/request/' + id).then(response => {
+        dispatch({
+            type: loginTypes.Set_Friend_Requests,
+            payload: response.data
+        })
+    }).catch(error => {
+        console.log(error)
+    })
+    // note, using old school promises because we do not need to get this
+    // information in order
+}
+
+export const sendLogin = (username: string, password: string, history: any) => async dispatch => {
     try {
         const response = await loginClient.post('', {
             username,
             password
         })
-        if(response.status === 200 && response.data.id) {
+        if (response.status === 200 && response.data.id) {
             dispatch({
                 type: loginTypes.Set_Current_User,
                 payload: response.data
             })
+            getInformation(response.data.id, dispatch)
             history.push('/groups')
         }
     } catch (error) {
@@ -25,7 +58,7 @@ export const sendLogin = (username:string, password:string, history:any) => asyn
     }
 }
 
-export const sendRegistration = (username:string, password:string, email:string, dateOfBirth:string, history:any) => async dispatch => {
+export const sendRegistration = (username: string, password: string, email: string, dateOfBirth: string, history: any) => async dispatch => {
     try {
         const response = await userClient.post('register', {
             dateOfBirth,
@@ -35,7 +68,7 @@ export const sendRegistration = (username:string, password:string, email:string,
             id: 0
         })
 
-        if(response.status === 200) {
+        if (response.status === 200) {
             dispatch({
                 type: loginTypes.Set_Current_User,
                 payload: response.data
@@ -44,6 +77,5 @@ export const sendRegistration = (username:string, password:string, email:string,
         }
     } catch (error) {
         console.log(error);
-        
     }
 }
