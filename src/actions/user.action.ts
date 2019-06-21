@@ -4,7 +4,8 @@ import { IUser } from "../models/User";
 export const userTypes ={
     Not_Found: 'USER_NOT_FOUND',
     Found_User: 'USER_FOUND',
-    Set_User_Groups: 'SET_USER_GROUPS'
+    Set_User_Groups: 'SET_USER_GROUPS',
+    Set_Friendables: 'SET_FRIENDABLES'
 }
 
 export const getUserGroups = (id:number) => async dispatch => {
@@ -34,5 +35,20 @@ export const updateProfile = (user:IUser) => async (dispatch) => {
             type: userTypes.Found_User,
             payload: response.data
         })
+    }
+
+}
+
+export const getFriendables = (id:number) => async dispatch => {
+    try {
+        const response = await userClient.get('friends/potendial/' + id)
+        if(response.status === 200) {
+            dispatch({
+                type: userTypes.Set_Friendables,
+                payload: response.data
+            })
+        }
+    } catch (error) {
+        console.log(error)
     }
 }

@@ -7,6 +7,7 @@ import { IUser } from "../models/User";
 import { IUsergroup } from "../models/Usergroup";
 import { IGroup } from "../models/Group";
 import { FriendReducer } from "./friend.reducer";
+import { IFriending } from "../models/Friending";
 
 export interface ICurrentUserState{
     groups: IUsergroup[],
@@ -27,8 +28,9 @@ export interface ISearchedGroupsState{
 }
 
 export interface IFriendState {
-    mutualFriends: IUser[]
-    friendRequests: IUser[]
+    mutualFriends: IFriending[]
+    friendRequests: IFriending[]
+    friendables: IUser[]
 }
 
 //all the states we are following

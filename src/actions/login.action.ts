@@ -1,5 +1,6 @@
 import { loginClient } from '../axios/login-client'
 import { userClient } from '../axios/user-client';
+import { friendingClient } from '../axios/friending-client';
 
 export const loginTypes = {
     New_User: 'NEW_USER_LOGGED_IN',
@@ -19,7 +20,7 @@ export const getInformation = (id: number, dispatch: any) => {
     }).catch(error => {
         console.log(error);
     })
-    userClient.get('/friends/' + id).then(response => {
+    friendingClient.get('/friends/' + id).then(response => {
         dispatch({
             type: loginTypes.Set_Mutual_Friends,
             payload: response.data
@@ -27,7 +28,7 @@ export const getInformation = (id: number, dispatch: any) => {
     }).catch(error => {
         console.log(error);
     })
-    userClient.get('/friends/request/' + id).then(response => {
+    friendingClient.get('/requests/' + id).then(response => {
         dispatch({
             type: loginTypes.Set_Friend_Requests,
             payload: response.data
