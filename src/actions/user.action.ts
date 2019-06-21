@@ -1,4 +1,5 @@
 import { userClient } from "../axios/user-client";
+import { IUser } from "../models/User";
 
 export const userTypes ={
     Not_Found: 'USER_NOT_FOUND',
@@ -18,6 +19,16 @@ export const getUserGroups = (id:number) => async dispatch => {
 
 export const getUserById = (id:number) => async (dispatch) => {
     const response = await userClient.get('/id/' + id)
+    if(response.status === 200) {
+        dispatch({
+            type: userTypes.Found_User,
+            payload: response.data
+        })
+    }
+}
+
+export const updateProfile = (user:IUser) => async (dispatch) => {
+    const response = await userClient.patch('/update', user)
     if(response.status === 200) {
         dispatch({
             type: userTypes.Found_User,

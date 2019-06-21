@@ -3,7 +3,7 @@ import { connect } from "react-redux";
 import { IState } from "../../reducers";
 import { RouteComponentProps, withRouter } from "react-router";
 import { IUser } from "../../models/User";
-import { getUserById } from "../../actions/user.action";
+import { getUserById, updateProfile } from "../../actions/user.action";
 
 //The users page, can be seen by others but can only be edited by the user
 
@@ -12,6 +12,7 @@ interface ICurrentUsersState{
     isPasswordEditable: boolean
     isEmailEditable: boolean
     isDobEditable: boolean
+    thisProfile: IUser
     
 }
 
@@ -20,6 +21,7 @@ interface ICurrentUserProps extends RouteComponentProps{
     currentUser: IUser
     profileFocus: IUser
     getUserById: (id:number) => void
+    updateProfile: (user: IUser) => void
 
 }
 
@@ -30,10 +32,14 @@ class UserComponent extends React.Component<ICurrentUserProps, ICurrentUsersStat
             isPasswordEditable: false,
             isEmailEditable: false,
             isDobEditable: false,
+            thisProfile: this.props.profileFocus
     }
 
     componentDidMount(){
         this.props.getUserById(+this.props.match.params.id)
+        this.setState({
+            thisProfile: this.props.profileFocus
+        })
     }
 
     //Function to have this page editable 
@@ -81,6 +87,7 @@ class UserComponent extends React.Component<ICurrentUserProps, ICurrentUsersStat
 
     updateUser = (event)=>{
         event.preventDefault()
+        this.props.updateProfile(this.state.thisProfile)
         
     }
 
@@ -186,7 +193,7 @@ class UserComponent extends React.Component<ICurrentUserProps, ICurrentUsersStat
                                 <tr>
                                     <th>Birthday</th>
                                     <td>
-                                        {this.props.profileFocus.dateOfBirth}
+                                        {new Date(this.props.profileFocus.dateOfBirth).toDateString()}
                                     </td>
                                     <td>
                                         <button onClick={()=>{this.canEditDob(true)}}>Edit</button>
@@ -251,7 +258,8 @@ const mapStateToProps = (state:IState) =>{
 }
 
 const mapActionToProps = {
-    getUserById
+    getUserById,
+    updateProfile
 }
 
 export default connect(mapStateToProps,mapActionToProps)(withRouter(UserComponent))
