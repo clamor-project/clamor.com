@@ -91,6 +91,10 @@ class UserComponent extends React.Component<ICurrentUserProps, ICurrentUsersStat
         
     }
 
+    getFriends = ()=>{
+        
+    }
+
     
     render(){
 
