@@ -4,10 +4,11 @@ import { IState } from '../../reducers';
 import { Table } from 'reactstrap';
 import { IUser } from '../../models/User';
 import { makeFriending, abandonFriending } from '../../actions/friending.action'
+import { IFriending } from '../../models/Friending';
 
 interface IFriendsPageProps {
-  mutualFriends: IUser[]
-  requests: IUser[]
+  mutualFriends: IFriending[]
+  requests: IFriending[]
   self: IUser
   makeFriending: (userId:number, targetId:number) => void
   abandonFriending: (userId:number, targetId:number) => void
@@ -37,7 +38,7 @@ export class FriendsPage extends PureComponent<IFriendsPageProps> {
             </thead>
             <tbody>
               {this.props.mutualFriends.map(friend => <tr key={friend.id}>
-                <td>{friend.username}</td>
+                <td>{friend.user1.username}</td>
                 <td><button>. . .</button></td>
               </tr>)}
             </tbody>
@@ -55,9 +56,9 @@ export class FriendsPage extends PureComponent<IFriendsPageProps> {
             </thead>
             <tbody>
               {this.props.requests.map(request => <tr key={request.id}>
-                <td>{request.username}</td>
-                <td><button onClick={this.handleAccept(request.id)}>friend</button></td>
-                <td><button onClick={this.handleReject(request.id)}>ignore</button></td>
+                <td>{request.user1.username}</td>
+                <td><button onClick={this.handleAccept(request.user1.id)}>friend</button></td>
+                <td><button onClick={this.handleReject(request.user1.id)}>ignore</button></td>
               </tr>)}
             </tbody>
           </Table>
