@@ -5,6 +5,7 @@ import { Table } from 'reactstrap';
 import { IUser } from '../../models/User';
 import { makeFriending, abandonFriending } from '../../actions/friending.action'
 import { IFriending } from '../../models/Friending';
+import RequestModal from './requestmodal'
 
 interface IFriendsPageProps {
   mutualFriends: IFriending[]
@@ -14,7 +15,21 @@ interface IFriendsPageProps {
   abandonFriending: (userId:number, targetId:number) => void
 }
 
-export class FriendsPage extends PureComponent<IFriendsPageProps> {
+interface IFriendsPageState {
+  makeRequestModal:boolean
+}
+
+export class FriendsPage extends PureComponent<IFriendsPageProps, IFriendsPageState> {
+
+  state = {
+    makeRequestModal: false
+  }
+
+  handleOpen = () => {
+    this.setState({
+      makeRequestModal: !this.state.makeRequestModal
+    })
+  }
 
   handleAccept = (id:number) => () => {
     this.props.makeFriending(this.props.self.id, id)
@@ -27,6 +42,7 @@ export class FriendsPage extends PureComponent<IFriendsPageProps> {
   render() {
     return (
       <div>
+        {this.state.makeRequestModal && <RequestModal handleClose={this.handleOpen} />}
         {this.props.mutualFriends.length ? <div>
           <p>Friends</p>
           <Table>
@@ -64,6 +80,7 @@ export class FriendsPage extends PureComponent<IFriendsPageProps> {
           </Table>
         </div>
         : <p>no one wants to be friends with you</p>}
+        {this.props.self.id && <button onClick={this.handleOpen}>Make Request</button>}
       </div>
     )
   }

@@ -29,6 +29,7 @@ export interface ISearchedGroupsState{
 export interface IFriendState {
     mutualFriends: IFriending[]
     friendRequests: IFriending[]
+    friendables: IUser[]
 }
 
 //all the states we are following
