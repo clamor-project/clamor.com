@@ -3,18 +3,46 @@ import { connect } from 'react-redux';
 import { IState } from '../../reducers';
 import { Table } from 'reactstrap';
 import { IUser } from '../../models/User';
+import { makeFriending, abandonFriending } from '../../actions/friending.action'
+import { IFriending } from '../../models/Friending';
+import RequestModal from './requestmodal'
 
 interface IFriendsPageProps {
-  mutualFriends: IUser[]
-  requests: IUser[]
+  mutualFriends: IFriending[]
+  requests: IFriending[]
+  self: IUser
+  makeFriending: (userId:number, targetId:number) => void
+  abandonFriending: (userId:number, targetId:number) => void
 }
 
-export class FriendsPage extends PureComponent<IFriendsPageProps> {
+interface IFriendsPageState {
+  makeRequestModal:boolean
+}
 
+export class FriendsPage extends PureComponent<IFriendsPageProps, IFriendsPageState> {
+
+  state = {
+    makeRequestModal: false
+  }
+
+  handleOpen = () => {
+    this.setState({
+      makeRequestModal: !this.state.makeRequestModal
+    })
+  }
+
+  handleAccept = (id:number) => () => {
+    this.props.makeFriending(this.props.self.id, id)
+  }
+
+  handleReject = (id:number) => () => {
+    this.props.abandonFriending(id, this.props.self.id)
+  }
 
   render() {
     return (
       <div>
+        {this.state.makeRequestModal && <RequestModal handleClose={this.handleOpen} />}
         {this.props.mutualFriends.length ? <div>
           <p>Friends</p>
           <Table>
@@ -26,7 +54,7 @@ export class FriendsPage extends PureComponent<IFriendsPageProps> {
             </thead>
             <tbody>
               {this.props.mutualFriends.map(friend => <tr key={friend.id}>
-                <td>{friend.username}</td>
+                <td>{friend.user1.username}</td>
                 <td><button>. . .</button></td>
               </tr>)}
             </tbody>
@@ -44,14 +72,15 @@ export class FriendsPage extends PureComponent<IFriendsPageProps> {
             </thead>
             <tbody>
               {this.props.requests.map(request => <tr key={request.id}>
-                <td>{request.username}</td>
-                <td><button>friend</button></td>
-                <td><button>ignore</button></td>
+                <td>{request.user1.username}</td>
+                <td><button onClick={this.handleAccept(request.user1.id)}>friend</button></td>
+                <td><button onClick={this.handleReject(request.user1.id)}>ignore</button></td>
               </tr>)}
             </tbody>
           </Table>
         </div>
         : <p>no one wants to be friends with you</p>}
+        {this.props.self.id && <button onClick={this.handleOpen}>Make Request</button>}
       </div>
     )
   }
@@ -59,7 +88,13 @@ export class FriendsPage extends PureComponent<IFriendsPageProps> {
 
 const mapStateToProps = (state: IState) => ({
   mutualFriends: state.FriendState.mutualFriends,
-  requests: state.FriendState.friendRequests
+  requests: state.FriendState.friendRequests,
+  self: state.CurrentUser.self
 })
 
-export default connect(mapStateToProps)(FriendsPage)
+const mapDispatchToProps = {
+  makeFriending,
+  abandonFriending
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(FriendsPage)

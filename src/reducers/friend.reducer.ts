@@ -1,9 +1,11 @@
 import { IFriendState } from ".";
 import { loginTypes } from "../actions/login.action";
+import { userTypes } from "../actions/user.action";
 
 const initialState:IFriendState = {
   mutualFriends: [],
-  friendRequests: []
+  friendRequests: [],
+  friendables: []
 }
 
 export const FriendReducer = (state = initialState, action) => {
@@ -17,6 +19,11 @@ export const FriendReducer = (state = initialState, action) => {
       return {
         ...state,
         friendRequests: action.payload
+      }
+    case userTypes.Set_Friendables:
+      return {
+        ...state,
+        friendables: action.payload
       }
     default:
       return state
