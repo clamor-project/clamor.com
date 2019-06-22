@@ -7,12 +7,12 @@ import { getEventsByGroupId } from '../../actions/event.action';
 import { IGroup } from "../../models/Group";
 import { IUsergroup } from "../../models/Usergroup";
 import { IUser } from "../../models/User";
-import { Container, CardColumns, Card, CardBody, CardTitle, CardText, CardImg, CardFooter, Jumbotron, Button } from "reactstrap";
+import { Container, CardColumns, Card, CardBody, CardTitle, CardText, CardImg, CardFooter, Jumbotron, Button, Modal, ModalHeader, ModalBody, ModalFooter } from "reactstrap";
 import { IEvent } from "../../models/Event";
-
+import NewEventModal from "./new-event-modal.component";
 
 interface ICurrentUsersState {
-
+    modal: boolean;
 }
 
 interface ICurrentUserProps extends RouteComponentProps {
@@ -29,14 +29,22 @@ interface ICurrentUserProps extends RouteComponentProps {
 
 
 class GroupComponent extends React.Component<ICurrentUserProps, ICurrentUsersState>{
-
-    state = {
-
+    constructor(props: ICurrentUserProps) {
+        super(props);
+        this.state = {
+            modal: false,
+        }
     }
 
     componentDidMount() {
         this.props.getGroupById(+this.props.match.params.id)
         this.props.getEventsByGroupId(this.props.match.params.id)
+    }
+
+    toggleModal = (prevState) => {
+        this.setState({
+            modal: !prevState
+        });
     }
 
     handleJoin = () => {
@@ -106,6 +114,9 @@ class GroupComponent extends React.Component<ICurrentUserProps, ICurrentUsersSta
                         )}
                     </CardColumns>
                 </Container>
+                <div>
+                    <NewEventModal className="new-event-modal" buttonLabel="New Event" groupId={this.props.match.params.id} />
+                </div>
             </div>
         )
     }

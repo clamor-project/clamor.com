@@ -1,5 +1,6 @@
 import { eventClient } from "../axios/event-client";
 import { groupClient } from "../axios/group-client";
+import { IEvent } from "../models/Event";
 
 export const EVENT_TYPES = {
     SET_GROUP_EVENTS: 'SET_GROUP_EVENTS',
@@ -29,6 +30,16 @@ export const getEventById = (id: number) => async (dispatch) => {
                 payload: response.data
             })
         }
+    } catch (err) {
+        console.log(`Something went wrong: ${err}`);
+    }
+}
+
+export const createEvent = (event: IEvent, groupId: number) => async (dispatch) => {
+    try {
+        const response = await eventClient.post(`event/${groupId}`, event);
+        if (response.status === 200)
+        console.log(response.data);
     } catch (err) {
         console.log(`Something went wrong: ${err}`);
     }
