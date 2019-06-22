@@ -37,9 +37,10 @@ export const getEventById = (id: number) => async (dispatch) => {
 
 export const createEvent = (event: IEvent, groupId: number) => async (dispatch) => {
     try {
-        const response = await eventClient.post(`event/${groupId}`, event);
-        if (response.status === 200)
-        console.log(response.data);
+        const response = await groupClient.post(`event/${groupId}`, event);
+        if (response.status === 200){
+            getEventsByGroupId(groupId);
+        }
     } catch (err) {
         console.log(`Something went wrong: ${err}`);
     }

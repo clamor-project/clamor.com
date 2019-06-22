@@ -7,12 +7,13 @@ import { getEventsByGroupId } from '../../actions/event.action';
 import { IGroup } from "../../models/Group";
 import { IUsergroup } from "../../models/Usergroup";
 import { IUser } from "../../models/User";
-import { Container, CardColumns, Card, CardBody, CardTitle, CardText, CardImg, CardFooter, Jumbotron, Button, Modal, ModalHeader, ModalBody, ModalFooter } from "reactstrap";
+import { Container, CardColumns, Card, CardBody, CardTitle, CardText, CardImg, CardFooter, Jumbotron, Button } from "reactstrap";
 import { IEvent } from "../../models/Event";
 import NewEventModal from "./new-event-modal.component";
 
 interface ICurrentUsersState {
     modal: boolean;
+    usergroup: IUsergroup;
 }
 
 interface ICurrentUserProps extends RouteComponentProps {
@@ -33,12 +34,31 @@ class GroupComponent extends React.Component<ICurrentUserProps, ICurrentUsersSta
         super(props);
         this.state = {
             modal: false,
+            usergroup: {
+                group: null,
+                id: 0,
+                joinedDate: null,
+                user: null,
+                role: {id: 0, roleName: ''}
+            }
         }
     }
 
     componentDidMount() {
-        this.props.getGroupById(+this.props.match.params.id)
-        this.props.getEventsByGroupId(this.props.match.params.id)
+        this.props.getGroupById(+this.props.match.params.id);
+        this.props.getEventsByGroupId(this.props.match.params.id);
+        this.findUsergroup();
+    }
+
+    findUsergroup = () => {
+        for (let ug of this.props.userGroups) {
+            if (parseInt(this.props.match.params.id) === ug.group.id) {
+                this.setState({
+                    ...this.state,
+                    usergroup: ug
+                });
+            }
+        }
     }
 
     toggleModal = (prevState) => {
@@ -47,12 +67,24 @@ class GroupComponent extends React.Component<ICurrentUserProps, ICurrentUsersSta
         });
     }
 
+    handleStatus = (id: number, roleName: string) => {
+        this.setState({
+            ...this.state,
+            usergroup: {
+                ...this.state.usergroup,
+                role: {id, roleName}
+            }
+        });
+    }
+
     handleJoin = () => {
         this.props.joinGroup(this.props.user, this.props.groupData.id)
+        this.handleStatus(2, 'member');
     }
 
     handleLeave = () => {
-        this.props.leaveGroup(this.props.user, this.props.groupData.id)
+        this.props.leaveGroup(this.props.user, this.props.groupData.id);
+        this.handleStatus(4, 'left');
     }
 
     jumboSub = (groupRole: string) => {
@@ -115,7 +147,7 @@ class GroupComponent extends React.Component<ICurrentUserProps, ICurrentUsersSta
                     </CardColumns>
                 </Container>
                 <div>
-                    <NewEventModal className="new-event-modal" buttonLabel="New Event" groupId={this.props.match.params.id} />
+                    {['member', 'organizer'].includes(this.state.usergroup.role.roleName) ? <NewEventModal className="new-event-modal" buttonLabel="New Event" groupId={this.props.match.params.id} /> : <></>}
                 </div>
             </div>
         )

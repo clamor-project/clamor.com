@@ -3,7 +3,7 @@
 import React from 'react';
 import { Button, Modal, ModalHeader, ModalBody, ModalFooter, Form, FormGroup, Input, Label } from 'reactstrap';
 import { connect } from 'react-redux';
-import { IState, state } from '../../reducers';
+import { IState } from '../../reducers';
 import { createEvent } from '../../actions/event.action';
 import { IEvent } from '../../models/Event';
 import { IUsergroup } from '../../models/Usergroup';
@@ -25,6 +25,7 @@ interface INewEventModalState {
     title: string;
     description: string;
     date: string;
+    time: string;
     live: string | number | string [];
 }
 
@@ -36,13 +37,19 @@ class NewEventModal extends React.Component<INewEventModalProps, INewEventModalS
       title: '',
       description: '',
       date: '',
+      time: '',
       live: 'false'
     };
   }
 
   toggle = () => {
     this.setState(prevState => ({
-      modal: !prevState.modal
+      modal: !prevState.modal,
+      title: '',
+      description: '',
+      date: '',
+      time: '',
+      live: 'false'
     }));
   }
 
@@ -64,10 +71,12 @@ class NewEventModal extends React.Component<INewEventModalProps, INewEventModalS
     event.preventDefault();
     let creator: IUsergroup = null;
     for (let group of this.props.groups) {
-      if (group.user.id === this.props.currentUser.id) {
+      if (+group.group.id === +this.props.groupId) {
         creator = group;
       }
     }
+    let fullDate: Date = new Date(this.state.date + " " + this.state.time + ":00");
+    // fullDate = new Date(fullDate.getTime() - 14400000); // if there's a time zone problem, use this line for eastern time
     const live: boolean = this.state.live === 'true' ? true : false;
     const newEvent: IEvent = {
       id: 0,
@@ -76,16 +85,18 @@ class NewEventModal extends React.Component<INewEventModalProps, INewEventModalS
       title: this.state.title,
       description: this.state.description,
       datePosted: new Date(),
-      dateOf: this.state.date,
+      dateOf: fullDate,
       live: live
     };
+    this.props.createEvent(newEvent, this.props.groupId);
     console.log(newEvent);
+    this.toggle();
   }
 
   render() {
     return (
       <div>
-        <Button color="danger" onClick={this.toggle}>{this.props.buttonLabel}</Button>
+        <Button color="primary" onClick={this.toggle}>{this.props.buttonLabel}</Button>
         <Modal isOpen={this.state.modal} toggle={this.toggle} className={this.props.className}>
           <Form onSubmit={this.submit}>
             <ModalHeader toggle={this.toggle}>Create a New Event</ModalHeader>
@@ -101,6 +112,10 @@ class NewEventModal extends React.Component<INewEventModalProps, INewEventModalS
               <FormGroup>
                 <Label htmlFor="dateof">Date of event</Label>
                 <Input name="dateof" type="date" value={this.state.date} onChange={this.handleChange('date')} />
+              </FormGroup>
+              <FormGroup>
+                <Label htmlFor="timeof">Time of event</Label>
+                <Input name="timeof" type="time" value={this.state.time} onChange={this.handleChange('time')} />
               </FormGroup>
               <FormGroup>
                 <Label check>
