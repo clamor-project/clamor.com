@@ -39,7 +39,30 @@ export const createEvent = (event: IEvent, groupId: number) => async (dispatch) 
     try {
         const response = await groupClient.post(`event/${groupId}`, event);
         if (response.status === 200){
-            getEventsByGroupId(groupId);
+            const newResponse = await groupClient.get(`event/${groupId}`);
+            if (newResponse.status === 200) {
+                dispatch({
+                    type: EVENT_TYPES.SET_CURRENT_EVENT,
+                    payload: newResponse.data
+                });
+            }
+        }
+    } catch (err) {
+        console.log(`Something went wrong: ${err}`);
+    }
+}
+
+export const editEvent = (event: IEvent, userId: number) => async (dispatch) => {
+    try {
+        const response = await groupClient.patch(`event/${userId}`, event);
+        if (response.status === 200) {
+            const newResponse = await groupClient.get(`event/${event.creator.group.id}`);
+            if (newResponse.status === 200) {
+                dispatch({
+                    type: EVENT_TYPES.SET_CURRENT_EVENT,
+                    payload: newResponse.data
+                });
+            }
         }
     } catch (err) {
         console.log(`Something went wrong: ${err}`);
