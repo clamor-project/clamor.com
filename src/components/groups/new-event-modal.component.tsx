@@ -89,7 +89,6 @@ class NewEventModal extends React.Component<INewEventModalProps, INewEventModalS
       live: live
     };
     this.props.createEvent(newEvent, this.props.groupId);
-    console.log(newEvent);
     this.toggle();
   }
 

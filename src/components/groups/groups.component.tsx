@@ -10,6 +10,7 @@ import { IUser } from "../../models/User";
 import { Container, CardColumns, Card, CardBody, CardTitle, CardText, CardImg, CardFooter, Jumbotron, Button } from "reactstrap";
 import { IEvent } from "../../models/Event";
 import NewEventModal from "./new-event-modal.component";
+import EditEventModal from "./edit-event-modal-component";
 
 interface ICurrentUsersState {
     modal: boolean;
@@ -140,6 +141,7 @@ class GroupComponent extends React.Component<ICurrentUserProps, ICurrentUsersSta
                                     </CardText>
                                     <CardFooter className="card-footer">
                                         This event is hosted by {event.creator.group.name} and will {event.live ? "" : "not"} be live
+                                        {this.state.usergroup.id === event.creator.id ? <EditEventModal groupId={this.props.match.params.id} className={"EditEvent" + event.id} buttonLabel="Edit Event" event={event} /> : <></>}
                                     </CardFooter>
                                 </CardBody>
                             </Card>
