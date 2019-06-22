@@ -92,7 +92,7 @@ class EditEventModal extends Component<IEditEventModalProps, IEditEventModalStat
       <Button color="primary" onClick={this.toggle}>{this.props.buttonLabel}</Button>
       <Modal isOpen={this.state.modal} toggle={this.toggle} className={this.props.className}>
         <Form onSubmit={this.submit}>
-          <ModalHeader toggle={this.toggle}>Create a New Event</ModalHeader>
+          <ModalHeader toggle={this.toggle}>Edit Event</ModalHeader>
           <ModalBody>
             <FormGroup>
               <Label htmlFor="title">Title</Label>
