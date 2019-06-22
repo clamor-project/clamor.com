@@ -46,3 +46,14 @@ export const joinGroup = (user:IUser, groupId:number) => async dispatch => {
         console.log(error)
     }
 }
+
+export const leaveGroup = (user: IUser, groupId: number) => async (dispatch) => {
+    try {
+        const response = await groupClient.patch('/leave/' + groupId, user);
+        if (response.status === 200) {
+            getInformation(user.id, dispatch)
+        }
+    } catch (err) {
+        console.log(`Something went wrong: ${err}`);
+    }
+}

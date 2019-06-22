@@ -7,11 +7,19 @@ import { IUser } from "../models/User";
 import { IUsergroup } from "../models/Usergroup";
 import { IGroup } from "../models/Group";
 import { FriendReducer } from "./friend.reducer";
+import { EventReducer } from "./event.reducer";
+import { IEvent } from "../models/Event";
 import { IFriending } from "../models/Friending";
+
 
 export interface ICurrentUserState{
     groups: IUsergroup[],
     self: IUser
+}
+
+export interface IEventState {
+    eventList: IEvent[];
+    currentEvent: IEvent;
 }
 
 export interface ICurrentGroupState extends IGroup{
@@ -39,6 +47,7 @@ export interface IState{
     UserFinder: ISearchedUsersState
     GroupFinder: ISearchedGroupsState
     FriendState: IFriendState
+    EventState: IEventState
 }
 
 //
@@ -47,5 +56,6 @@ export const state = combineReducers<IState>({
     CurrentGroup: CurrentGroupReducer,
     UserFinder: SearchedUserReducer,
     GroupFinder: SearchedGroupReducer,
-    FriendState: FriendReducer
+    FriendState: FriendReducer,
+    EventState: EventReducer
 })
