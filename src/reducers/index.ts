@@ -11,6 +11,8 @@ import { EventReducer } from "./event.reducer";
 import { IEvent } from "../models/Event";
 import { IFriending } from "../models/Friending";
 import { IDirectmessage } from "../models/Directmessage";
+import { IGroupMessage } from "../models/GroupMessage";
+import { GroupMessageReducer } from "./group-message.reducer";
 
 
 export interface ICurrentUserState{
@@ -42,6 +44,10 @@ export interface IFriendState {
     messages: IDirectmessage[]
 }
 
+export interface IGroupMessageState {
+    messageList?: IGroupMessage[]
+}
+
 //all the states we are following
 export interface IState{
     CurrentUser: ICurrentUserState
@@ -50,6 +56,7 @@ export interface IState{
     GroupFinder: ISearchedGroupsState
     FriendState: IFriendState
     EventState: IEventState
+    GroupMessageState: IGroupMessageState
 }
 
 //
@@ -59,5 +66,6 @@ export const state = combineReducers<IState>({
     UserFinder: SearchedUserReducer,
     GroupFinder: SearchedGroupReducer,
     FriendState: FriendReducer,
-    EventState: EventReducer
+    EventState: EventReducer,
+    GroupMessageState: GroupMessageReducer
 })
