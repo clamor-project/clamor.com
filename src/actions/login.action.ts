@@ -83,6 +83,7 @@ export const sendRegistration = (username: string, password: string, email: stri
                 type: loginTypes.Set_Current_User,
                 payload: response.data
             })
+            getInformation(response.data.id, dispatch)
             history.push('/browse')
         }
     } catch (error) {
