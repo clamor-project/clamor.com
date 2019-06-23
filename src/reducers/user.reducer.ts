@@ -4,7 +4,13 @@ import { userTypes } from '../actions/user.action';
 
 const initialState: ISearchedUsersState = {
     manyUsers: [],
-    selectUser: undefined
+    selectUser: {
+        id: 0,
+        username: "",
+        email: "",
+        dateOfBirth: "",
+        password: ""
+    }
 }
 
 
