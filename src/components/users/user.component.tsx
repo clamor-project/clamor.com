@@ -3,7 +3,7 @@ import { connect } from "react-redux";
 import { IState } from "../../reducers";
 import { RouteComponentProps, withRouter } from "react-router";
 import { IUser } from "../../models/User";
-import { getUserById, updateProfile, findFriends } from "../../actions/user.action";
+import { getUserById, updateProfile, updateUser } from "../../actions/user.action";
 import { IFriending } from "../../models/Friending";
 import { Link } from "react-router-dom";
 
@@ -16,6 +16,7 @@ interface ICurrentUsersState{
     isDobEditable: boolean
     didUpdate: string
     thisProfile: IUser
+    previousPage: number
     
     
 }
@@ -25,9 +26,10 @@ interface ICurrentUserProps extends RouteComponentProps{
     currentUser: IUser
     profileFocus: IUser
     mutualFriends: IFriending[]
+    profileId: number
     getUserById: (id:number) => void
     updateProfile: (user: IUser) => void
-    findFriends: (id:number) => void
+    updateUser: (user:IUser) => void
 
 }
 
@@ -46,14 +48,14 @@ class UserComponent extends React.Component<ICurrentUserProps, ICurrentUsersStat
                 username: '',
                 email: '',
                 dateOfBirth: ''
-            }
+            },
+            previousPage: 0,
         }
     }
 
-    componentDidMount(){
+    componentWillMount(){
         try{
             this.props.getUserById(+this.props.match.params.id)
-            this.props.findFriends(+this.props.match.params.id)
         }catch(err){
             console.log(err)
         }
@@ -64,14 +66,20 @@ class UserComponent extends React.Component<ICurrentUserProps, ICurrentUsersStat
     }
 
     componentDidUpdate(){
-        try{
-            this.props.getUserById(+this.props.match.params.id)
-            this.props.findFriends(+this.props.match.params.id)
-        }catch(err){
-            console.log(err)
+        if(this.state.previousPage != +this.props.match.params.id){
+            try{
+                this.props.getUserById(+this.props.match.params.id)
+                this.setState({
+                    previousPage: +this.props.match.params.id
+                })
+            }catch(err){
+                console.log(err)
+            }
+            
+            
         }
 
-        if(this.props.profileFocus.id === +this.props.match.params.id){
+        if(this.props.profileId != this.state.thisProfile.id){
             this.setState({
                 thisProfile: this.props.profileFocus
             }) 
@@ -122,21 +130,19 @@ class UserComponent extends React.Component<ICurrentUserProps, ICurrentUsersStat
         return TorF
     }
 
-    //for setting the profile state
     handleChangeFor = property => (event) => {
         this.setState({
-          thisProfile: {
-            ...this.state.thisProfile,
-            [property]: event.target.value
-          }
+            thisProfile: {
+                ...this.state.thisProfile,
+                [property]: event.target.value
+            }
         });
-      }
+    }
 
     updateUser = (event)=>{
         event.preventDefault()
         try{
-            this.props.findFriends(this.state.thisProfile.id)
-            this.props.updateProfile(this.state.thisProfile)
+            this.props.updateUser(this.state.thisProfile)
         }catch(err){
             console.log(err)
         }
@@ -146,16 +152,21 @@ class UserComponent extends React.Component<ICurrentUserProps, ICurrentUsersStat
         
     }
 
-    printFriends = this.props.mutualFriends.map((friends, index)=>{
-        return(
-            <li key={`${friends.id}`}><Link to = {'/profile/' + friends.user1.id.toString()}>{friends.user1.id !== +this.props.match.params.id ? friends.user1.username: friends.user2.username}</Link></li>
-        )
-    })
+    printFriends = () =>{
+
+        let allFriends = this.props.mutualFriends.map((friends, index)=>{
+            return(
+                <li key={`${friends.id}`}><Link to = {friends.user1.id !== +this.props.match.params.id ? '/profile/' + friends.user1.id.toString(): '/profile/' + friends.user2.id.toString()}>{friends.user1.id !== +this.props.match.params.id ? friends.user1.username: friends.user2.username}</Link></li>
+            )
+        })
+
+        return allFriends
+    }
 
     
     render(){
-        console.log(this.state.thisProfile)
-
+        console.log(this.state.thisProfile.id)
+        console.log(+this.props.match.params.id)
         
 
         if(this.isUser()){
@@ -264,7 +275,7 @@ class UserComponent extends React.Component<ICurrentUserProps, ICurrentUsersStat
                     
                     <h2>Friends</h2>
                     <ol>
-                        {this.printFriends}
+                        {this.printFriends()}
                     </ol>
                     
                 </div>
@@ -303,7 +314,7 @@ class UserComponent extends React.Component<ICurrentUserProps, ICurrentUsersStat
 
                     <h2>Friends</h2>
                     <ol>
-                        {this.printFriends}
+                        {this.printFriends()}
                     </ol>
                 </div>
             )
@@ -316,14 +327,15 @@ const mapStateToProps = (state:IState) =>{
     return{
         currentUser: state.CurrentUser.self,
         profileFocus: state.UserFinder.selectUser,
-        mutualFriends: state.FriendState.mutualFriends
+        profileId: state.UserFinder.selectUser.id,
+        mutualFriends: state.UserFinder.friends
     }
 }
 
 const mapActionToProps = {
     getUserById,
     updateProfile,
-    findFriends
+    updateUser,
 }
 
 export default connect(mapStateToProps,mapActionToProps)(withRouter(UserComponent))

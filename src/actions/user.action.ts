@@ -7,7 +7,8 @@ export const userTypes ={
     Not_Found: 'USER_NOT_FOUND',
     Found_User: 'FOUND_USER',
     Set_User_Groups: 'SET_USER_GROUPS',
-    Set_Friendables: 'SET_FRIENDABLES'
+    Set_Friendables: 'SET_FRIENDABLES',
+    Found_Friends: 'FRIENDS_FOUND'
 }
 
 export const getUserGroups = (id:number) => async dispatch => {
@@ -21,16 +22,26 @@ export const getUserGroups = (id:number) => async dispatch => {
 }
 
 export const getUserById = (id:number) => async (dispatch) => {
-    const response = await userClient.get('/id/' + id)
-    if(response.status === 200) {
+    userClient.get('/id/' + id).then(response =>{
         dispatch({
             type: userTypes.Found_User,
             payload: response.data
         })
-    }
+    }).catch(error => {
+        console.log(error)
+    })
+
+    friendingClient.get('/friends/' + id).then(response =>{
+        dispatch({
+            type: userTypes.Found_Friends,
+            payload: response.data
+        })
+    }).catch(error =>{
+        console.log(error)
+    })
 }
 
-export const updateProfile = (user:IUser) => async (dispatch) => {
+export const updateUser = (user:IUser) => async (dispatch) => {
     const response = await userClient.patch('/update', user)
     if(response.status === 200) {
         dispatch({
@@ -40,6 +51,15 @@ export const updateProfile = (user:IUser) => async (dispatch) => {
     }
 
 }
+
+export const updateProfile = (user:IUser) => (dispatch)=>{
+    dispatch({
+        type: userTypes.Found_User,
+        payload: user
+    })
+}
+
+
 
 export const getFriendables = (id:number) => async dispatch => {
     try {
@@ -55,16 +75,3 @@ export const getFriendables = (id:number) => async dispatch => {
     }
 }
 
-export const findFriends = (id:number) => async dispatch =>{
-    try {
-        const response = await friendingClient.get('/friends/' + id)
-        if(response.status === 200) {
-            dispatch({
-                type: loginTypes.Set_Mutual_Friends,
-                payload: response.data
-            })
-        }
-    } catch (error) {
-        console.log(error)
-    }
-}

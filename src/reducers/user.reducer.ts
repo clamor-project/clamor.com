@@ -4,6 +4,7 @@ import { userTypes } from '../actions/user.action';
 
 const initialState: ISearchedUsersState = {
     manyUsers: [],
+    friends: [],
     selectUser: {
         id: 0,
         username: "",
@@ -21,7 +22,11 @@ export const SearchedUserReducer = (state = initialState, action) => {
                 ...state,
                 selectUser : action.payload
             }
-
+        case userTypes.Found_Friends:
+            return{
+                ...state,
+                friends : action.payload
+            }
         default:
             return state
     }
