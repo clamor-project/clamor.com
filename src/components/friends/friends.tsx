@@ -1,4 +1,4 @@
-import React, { PureComponent } from 'react'
+import React, { Component } from 'react'
 import { connect } from 'react-redux';
 import { IState } from '../../reducers';
 import { Table } from 'reactstrap';
@@ -6,6 +6,7 @@ import { IUser } from '../../models/User';
 import { makeFriending, abandonFriending } from '../../actions/friending.action'
 import { IFriending } from '../../models/Friending';
 import RequestModal from './requestmodal'
+import Chat from './chat';
 
 interface IFriendsPageProps {
   mutualFriends: IFriending[]
@@ -17,16 +18,19 @@ interface IFriendsPageProps {
 
 interface IFriendsPageState {
   makeRequestModal:boolean
+  chatroom:IFriending
 }
 
-export class FriendsPage extends PureComponent<IFriendsPageProps, IFriendsPageState> {
+export class FriendsPage extends Component<IFriendsPageProps, IFriendsPageState> {
 
   state = {
-    makeRequestModal: false
+    makeRequestModal: false,
+    chatroom: undefined
   }
 
   handleOpen = () => {
     this.setState({
+      ...this.state,
       makeRequestModal: !this.state.makeRequestModal
     })
   }
@@ -37,6 +41,13 @@ export class FriendsPage extends PureComponent<IFriendsPageProps, IFriendsPageSt
 
   handleReject = (id:number) => () => {
     this.props.abandonFriending(id, this.props.self.id)
+  }
+
+  handleChangeChat = (friending:IFriending) => () => {
+    this.setState({
+      ...this.state,
+      chatroom: friending
+    })
   }
 
   render() {
@@ -55,7 +66,7 @@ export class FriendsPage extends PureComponent<IFriendsPageProps, IFriendsPageSt
             <tbody>
               {this.props.mutualFriends.map(friend => <tr key={friend.id}>
                 <td>{friend.user1.username}</td>
-                <td><button>. . .</button></td>
+                <td><button onClick={this.handleChangeChat(friend)}>. . .</button></td>
               </tr>)}
             </tbody>
           </Table>
@@ -81,6 +92,7 @@ export class FriendsPage extends PureComponent<IFriendsPageProps, IFriendsPageSt
         </div>
         : <p>no one wants to be friends with you</p>}
         {this.props.self.id && <button onClick={this.handleOpen}>Make Request</button>}
+        <Chat friending={this.state.chatroom} />
       </div>
     )
   }

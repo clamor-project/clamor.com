@@ -10,6 +10,7 @@ import { FriendReducer } from "./friend.reducer";
 import { EventReducer } from "./event.reducer";
 import { IEvent } from "../models/Event";
 import { IFriending } from "../models/Friending";
+import { IDirectmessage } from "../models/Directmessage";
 
 
 export interface ICurrentUserState{
@@ -38,6 +39,7 @@ export interface IFriendState {
     mutualFriends: IFriending[]
     friendRequests: IFriending[]
     friendables: IUser[]
+    messages: IDirectmessage[]
 }
 
 //all the states we are following
