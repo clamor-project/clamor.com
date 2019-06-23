@@ -11,6 +11,8 @@ import { Container, CardColumns, Card, CardBody, CardTitle, CardText, CardImg, C
 import { IEvent } from "../../models/Event";
 import NewEventModal from "./new-event-modal.component";
 import EditEventModal from "./edit-event-modal-component";
+import GroupMessagingComponent from "./group-messaging/group-messaging.component";
+import { getGroupMessagesByGroupId } from '../../actions/group-message.action';
 
 interface ICurrentUsersState {
     modal: boolean;
@@ -27,6 +29,7 @@ interface ICurrentUserProps extends RouteComponentProps {
     joinGroup: (user: IUser, groupId: number) => void
     leaveGroup: (user: IUser, groupId: number) => void
     getEventsByGroupId: (groupId: number) => void
+    getGroupMessagesByGroupId: (groupId: number) => void
 }
 
 
@@ -48,6 +51,7 @@ class GroupComponent extends React.Component<ICurrentUserProps, ICurrentUsersSta
     componentDidMount() {
         this.props.getGroupById(+this.props.match.params.id);
         this.props.getEventsByGroupId(this.props.match.params.id);
+        this.props.getGroupMessagesByGroupId(this.props.match.params.id);
         this.findUsergroup();
     }
 
@@ -151,6 +155,7 @@ class GroupComponent extends React.Component<ICurrentUserProps, ICurrentUsersSta
                 <div>
                     {['member', 'organizer'].includes(this.state.usergroup.role.roleName) ? <NewEventModal className="new-event-modal" buttonLabel="New Event" groupId={this.props.match.params.id} /> : <></>}
                 </div>
+                <GroupMessagingComponent usergroup={this.state.usergroup} />
             </div>
         )
     }
@@ -172,6 +177,7 @@ const mapActionToProps = {
     joinGroup,
     getEventsByGroupId,
     leaveGroup,
+    getGroupMessagesByGroupId
 }
 
 export default connect(mapStateToProps, mapActionToProps)(withRouter(GroupComponent))
