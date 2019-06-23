@@ -47,13 +47,13 @@ export class RegisterForm extends Component<IRegisterPageProps, IRegisterPageSta
               <Form onSubmit={this.handleSubmit}>
                 <FormGroup>
                   <Label for="username">Username</Label>
-                  <Input type="text" placeholder="username" onChange={this.handleChange('username')} id="username" />
+                  <Input type="text" placeholder="username" onChange={this.handleChange('username')} id="username" required />
                   <Label for="password">Password</Label>
-                  <Input type="password" placeholder="password" onChange={this.handleChange('password')} id="password" />
+                  <Input type="password" placeholder="password" onChange={this.handleChange('password')} id="password" required />
                   <Label for="email">Email</Label>
-                  <Input type="text" placeholder="email" onChange={this.handleChange('email')} id="email" />
+                  <Input type="text" placeholder="email" onChange={this.handleChange('email')} id="email" required />
                   <Label for="dateOfBirth">Date of Birth</Label>
-                  <Input type="date" placeholder="Date of Birth" onChange={this.handleChange('dateOfBirth')} id="dateOfBirth" />
+                  <Input type="date" placeholder="Date of Birth" onChange={this.handleChange('dateOfBirth')} id="dateOfBirth" required />
                 </FormGroup>
                 <Input type="submit" value="Send Registration" />
               </Form>
