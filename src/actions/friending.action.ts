@@ -21,7 +21,7 @@ export const makeFriending = (userId: number, targetId: number) => async dispatc
   }
 }
 
-export const abandonFriending = (userId: number, targetId: number) => async dispatch => {
+export const abandonFriending = (targetId: number, userId: number) => async dispatch => {
   try {
     const response = await friendingClient.delete('/delete', {
       data: {

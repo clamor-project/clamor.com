@@ -64,12 +64,14 @@ export class FriendsPage extends Component<IFriendsPageProps, IFriendsPageState>
                     <tr>
                       <th>Name</th>
                       <th>Chat</th>
+                      <th>Abandon</th>
                     </tr>
                   </thead>
                   <tbody>
                     {this.props.mutualFriends.map(friend => <tr key={friend.id}>
                       <td>{friend.user1.username}</td>
                       <td><Button onClick={this.handleChangeChat(friend)} color="info">. . .</Button></td>
+                      <td><Button onClick={this.handleReject(friend.user1.id)}>X(</Button></td>
                     </tr>)}
                   </tbody>
                 </Table>
