@@ -5,13 +5,14 @@ import { connect } from 'react-redux';
 import { IUser } from '../../models/User';
 import { IDirectmessage } from '../../models/Directmessage';
 import { IFriending } from '../../models/Friending';
+import { Card, Input, Button, ListGroup } from 'reactstrap';
 
 interface IChatProps {
   friending: IFriending
   self: IUser
   messages: IDirectmessage[]
   setMessages: (user1: number, user2: number) => void
-  postMessage: (message:IDirectmessage) => void
+  postMessage: (message: IDirectmessage) => void
 }
 
 interface IChatState {
@@ -34,8 +35,8 @@ class Chat extends Component<IChatProps, IChatState> {
   }
 
   handlePost = () => {
-    let toSend:IDirectmessage = {
-      id:0,
+    let toSend: IDirectmessage = {
+      id: 0,
       friends: this.props.friending,
       content: this.state.text,
       sentDate: new Date()
@@ -56,26 +57,28 @@ class Chat extends Component<IChatProps, IChatState> {
   }
 
   componentDidUpdate() {
-    if(this.state.lastRoom !== this.props.friending.id) {
+    if (this.state.lastRoom !== this.props.friending.id) {
       this.handleRefresh()
     }
   }
 
   render() {
     return (
-      <div>
-        {this.props.friending && <> {this.props.messages.map(msg => (
-          <div key={msg.id}>
-            <b>{msg.friends.user2.username}</b>
-            <i>{' ' + new Date(msg.sentDate).toUTCString() + ':  '}</i>
-            <p>{msg.content}</p>
-          </div>
-        ))}
-          <textarea value={this.state.text} onChange={this.handleChat} placeholder="message" />
-          <button onClick={this.handlePost}>post message</button>
-          <button onClick={this.handleRefresh}>refresh</button>
+      <Card>
+        {this.props.friending && <>
+          <Input value={this.state.text} onChange={this.handleChat} placeholder="message" type="textarea" />
+          <Button onClick={this.handlePost} color="primary">post message</Button>
+          <Button onClick={this.handleRefresh} color="secondary">refresh</Button>
+          {this.props.messages.map(msg => (
+            <ListGroup key={msg.id}>
+                <b>{msg.friends.user2.username}</b>
+                <i>{' ' + new Date(msg.sentDate).toUTCString() + ':  '}</i>
+                <p>{msg.content}</p>
+            </ListGroup>
+          ))}
+
         </>}
-      </div>
+      </Card>
     )
   }
 }
