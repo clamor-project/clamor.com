@@ -7,14 +7,16 @@ import { Container, Input, Button, Table, Form } from 'reactstrap';
 import './group-messaging.component.css';
 import { IGroupMessage } from '../../../models/GroupMessage';
 import { IUsergroup } from '../../../models/Usergroup';
-import { postGroupMessage } from '../../../actions/group-message.action';
+import { postGroupMessage, deleteGroupMessage } from '../../../actions/group-message.action';
 
+// Dear future self: I am _SO_ sorry...
 interface IGroupMessagingProps {
   currentUser: IUser;
   currentGroup: IGroup;
   messageList: IGroupMessage[];
   usergroup: IUsergroup;
   postGroupMessage: (groupMessage: IGroupMessage) => void;
+  deleteGroupMessage: (messageId: number, groupId: number) => void;
 }
 
 interface IGroupMessagingState {
@@ -44,7 +46,13 @@ class GroupMessaging extends Component<IGroupMessagingProps, IGroupMessagingStat
       content: this.state.messageText,
       dateCreated: new Date()
     }
-    this.props.postGroupMessage(groupMessage);
+    if (this.state.messageText !== '') {
+      this.props.postGroupMessage(groupMessage);
+    }
+    this.setState({
+      ...this.state,
+      messageText: ''
+    });
   }
 
   formItems = () => {
@@ -63,6 +71,10 @@ class GroupMessaging extends Component<IGroupMessagingProps, IGroupMessagingStat
     }
   }
 
+  deleteMessage = (message: IGroupMessage) => {
+    this.props.deleteGroupMessage(+message.id, +message.author.group.id);
+  }
+
   componentDidMount() {
     console.log(this.props.messageList);
   }
@@ -77,7 +89,8 @@ class GroupMessaging extends Component<IGroupMessagingProps, IGroupMessagingStat
                 <tr>
                   <th className="username">Username</th>
                   <th className="message">Message</th>
-                  <th className="post">Posted</th>
+                  {/* <th className="action"></th> */}
+                  <th className="post"></th>
                 </tr>
               </thead>
               <tbody>
@@ -86,6 +99,7 @@ class GroupMessaging extends Component<IGroupMessagingProps, IGroupMessagingStat
                 <tr key={"message-" + message.id}>
                   <td className="username">{message.author.user.username}:</td>
                   <td className="message">{message.content}</td>
+                  {/* <td className="action">{message.author.user.id === this.props.currentUser.id ? <Button color="danger" onClick={() => this.deleteMessage(message)}>Delete</Button> : <></>}</td> */}
                   <td className="post">{((new Date(message.dateCreated)).toString()).substr(0,24)}</td>
                 </tr>): <></>}
               </tbody>
@@ -106,7 +120,8 @@ const mapStateToProps = (state: IState) => {
 }
 
 const mapDispatchToProps = {
-  postGroupMessage
+  postGroupMessage,
+  deleteGroupMessage
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(GroupMessaging);
