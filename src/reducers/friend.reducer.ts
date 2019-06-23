@@ -1,11 +1,13 @@
 import { IFriendState } from ".";
 import { loginTypes } from "../actions/login.action";
 import { userTypes } from "../actions/user.action";
+import { FRIENDING_TYPES } from "../actions/friending.action";
 
 const initialState:IFriendState = {
   mutualFriends: [],
   friendRequests: [],
-  friendables: []
+  friendables: [],
+  messages: []
 }
 
 export const FriendReducer = (state = initialState, action) => {
@@ -24,6 +26,11 @@ export const FriendReducer = (state = initialState, action) => {
       return {
         ...state,
         friendables: action.payload
+      }
+    case FRIENDING_TYPES.Set_Conversation:
+      return {
+        ...state,
+        messages: action.payload
       }
     default:
       return state
