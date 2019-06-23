@@ -4,5 +4,5 @@ export interface IDirectmessage {
   id:number
   friends:IFriending
   content:string
-  sendDate:Date | string | number
+  sentDate:Date | string | number
 }

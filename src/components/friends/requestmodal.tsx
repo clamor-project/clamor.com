@@ -1,5 +1,5 @@
 import React, { PureComponent } from 'react'
-import { Modal, ModalBody, Table } from 'reactstrap';
+import { Modal, ModalBody, Table, Button } from 'reactstrap';
 import { connect } from 'react-redux';
 import { IState } from '../../reducers';
 import { getFriendables } from '../../actions/user.action'
@@ -40,14 +40,14 @@ class RequestModal extends PureComponent<IRequestModalProps> {
             {this.props.requestable.map(friendable => (
             <tr key={friendable.id}>
               <td>{friendable.username}</td>
-              <td><button onClick={this.handleClick(friendable.id)}>send request</button></td>
+              <td><Button onClick={this.handleClick(friendable.id)} color="primary">send request</Button></td>
             </tr>
           ))}
             </tbody>
           </Table>
 
         </ModalBody>
-        <button onClick={this.props.handleClose}>Close</button>
+        <Button onClick={this.props.handleClose} color="secondary">Close</Button>
       </Modal>
     )
   }

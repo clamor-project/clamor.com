@@ -10,6 +10,7 @@ import { FriendReducer } from "./friend.reducer";
 import { EventReducer } from "./event.reducer";
 import { IEvent } from "../models/Event";
 import { IFriending } from "../models/Friending";
+import { IDirectmessage } from "../models/Directmessage";
 import { IGroupMessage } from "../models/GroupMessage";
 import { GroupMessageReducer } from "./group-message.reducer";
 
@@ -40,6 +41,7 @@ export interface IFriendState {
     mutualFriends: IFriending[]
     friendRequests: IFriending[]
     friendables: IUser[]
+    messages: IDirectmessage[]
 }
 
 export interface IGroupMessageState {
