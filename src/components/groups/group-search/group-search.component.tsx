@@ -4,6 +4,7 @@ import { IState } from "../../../reducers";
 import { RouteComponentProps } from "react-router";
 import { getAllGroups } from "../../../actions/group.action";
 import { IGroup } from "../../../models/Group";
+import { Card, Table, Button } from "reactstrap";
 
 interface IGroupSearchState{
     
@@ -28,8 +29,8 @@ class groupSearchComponent extends React.Component<ICurrentUserProps, IGroupSear
     
     render(){
         return(
-            <div>
-                {this.props.groupList.length && <table>
+            <Card>
+                {this.props.groupList.length && <Table dark>
                     <thead>
                         <tr>
                             <th>Name</th>
@@ -42,12 +43,12 @@ class groupSearchComponent extends React.Component<ICurrentUserProps, IGroupSear
                             <tr key={group.id}>
                                 <td>{group.name}</td>
                                 <td>{group.description}</td>
-                                <td><button onClick={this.handleClick(group.id)}>go</button></td>
+                                <td><Button onClick={this.handleClick(group.id)}>go</Button></td>
                             </tr>
                         ))}
                     </tbody>
-                </table>}
-            </div>
+                </Table>}
+            </Card>
         )
     }
         
