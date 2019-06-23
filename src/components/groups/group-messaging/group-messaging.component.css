@@ -9,7 +9,12 @@
   text-align: left;
 }
 
+.action {
+  width: 10%;
+}
+
 .post {
   width: 20%;
   text-align: center;
+  font-size: 9pt;
 }

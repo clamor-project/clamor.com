@@ -35,3 +35,20 @@ export const postGroupMessage = (groupMessage: IGroupMessage) => async (dispatch
     console.log(`Something went wrong: ${err}`);
   }
 }
+
+export const deleteGroupMessage = (messageId: number, groupId: number) => async (dispatch) => {
+  try {
+    const response = await apiClient.delete(`/group/messages/${messageId}`);
+    if (response.status === 200) {
+      const newResponse = await apiClient(`/group/messages/${groupId}`);
+      if (newResponse.status === 200) {
+        dispatch({
+          type: GROUP_MESSAGE_TYPES.SET_GROUP_MESSAGES,
+          payload: newResponse.data
+        });
+      }
+    }
+  } catch (err) {
+    console.log(`Something went wrong: ${err}`);
+  }
+}

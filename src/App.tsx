@@ -10,6 +10,7 @@ import groupSearchComponent from './components/groups/group-search/group-search.
 import GroupUsersComponent from './components/groups/group-users/group-users.component';
 import SignInComponent from './components/signin/signin.component';
 import FriendsPage from './components/friends/friends';
+import GroupOrganizer from './components/groups/group-organizer.component';
 
 const App: React.FC = () => {
   return (
@@ -22,7 +23,8 @@ const App: React.FC = () => {
             <Route path='/users' component={userComponent} />
             <Route path='/browse' component={groupSearchComponent} />
             <Route exact path="/groups" component={GroupUsersComponent} />
-            <Route path='/groups/:id' component={groupsComponent} />
+            <Route exact path='/groups/:id' component={groupsComponent} />
+            <Route exact path='/groups/organizer/:id' component={GroupOrganizer} />
             <Route path='/login' component={SignInComponent} />
             <Route path='/friends' component={FriendsPage} />
           </Switch>
