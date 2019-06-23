@@ -1,6 +1,6 @@
 import { IUsergroup } from "./Usergroup";
 
-export interface IGroupmessage {
+export interface IGroupMessage {
   author: IUsergroup
   id:number
   content:string
