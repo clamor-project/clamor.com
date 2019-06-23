@@ -49,7 +49,7 @@ export class RegisterForm extends Component<IRegisterPageProps, IRegisterPageSta
                   <Label for="username">Username</Label>
                   <Input type="text" placeholder="username" onChange={this.handleChange('username')} id="username" />
                   <Label for="password">Password</Label>
-                  <Input type="text" placeholder="password" onChange={this.handleChange('password')} id="password" />
+                  <Input type="password" placeholder="password" onChange={this.handleChange('password')} id="password" />
                   <Label for="email">Email</Label>
                   <Input type="text" placeholder="email" onChange={this.handleChange('email')} id="email" />
                   <Label for="dateOfBirth">Date of Birth</Label>

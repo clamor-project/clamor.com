@@ -46,7 +46,7 @@ class LoginForm extends Component<ILoginProps, ILoginState> {
                   <Label for="username">Username</Label>
                   <Input type="text" placeholder="username" onChange={this.handleChange('username')} id="username" />
                   <Label for="password">Password</Label>
-                  <Input type="text" placeholder="password" onChange={this.handleChange('password')} id="password" />
+                  <Input type="password" placeholder="password" onChange={this.handleChange('password')} id="password" />
                 </FormGroup>
                 <Input type="submit" value="Sign In" />
               </Form>
