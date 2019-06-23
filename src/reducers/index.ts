@@ -30,7 +30,9 @@ export interface ICurrentGroupState extends IGroup{
 }
 
 export interface ISearchedUsersState{
-
+    manyUsers: IUser[]
+    selectUser: IUser
+    friends : IFriendState[]
 }
 
 export interface ISearchedGroupsState{
