@@ -23,6 +23,12 @@
   color: #61dafb;
 }
 
+body {
+  background-image: linear-gradient(rgb(32, 162, 206), turquoise);
+  background-repeat: no-repeat;
+  background-size: 300vh 100vw;
+}
+
 @keyframes App-logo-spin {
   from {
     transform: rotate(0deg);
