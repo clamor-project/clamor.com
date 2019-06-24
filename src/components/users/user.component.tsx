@@ -292,12 +292,6 @@ class UserComponent extends React.Component<ICurrentUserProps, ICurrentUsersStat
                                 </td>
                             </tr>
                             <tr>
-                                <th>Password</th>
-                                <td>
-                                    {this.state.thisProfile.password}
-                                </td>
-                            </tr>
-                            <tr>
                                 <th>Email</th>
                                 <td>
                                     {this.state.thisProfile.email}
