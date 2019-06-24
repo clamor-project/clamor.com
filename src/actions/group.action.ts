@@ -1,6 +1,8 @@
 import { groupClient } from "../axios/group-client";
 import { IUser } from "../models/User";
-import { getInformation } from "./login.action";
+import { getInformation, loginTypes } from "./login.action";
+import { IUsergroup } from "../models/Usergroup";
+import { apiClient } from "../axios/client";
 
 export const GroupTypes = {
     Not_Found: 'GROUP_NOT_FOUND',
@@ -52,6 +54,30 @@ export const leaveGroup = (user: IUser, groupId: number) => async (dispatch) => 
         const response = await groupClient.patch('/leave/' + groupId, user);
         if (response.status === 200) {
             getInformation(user.id, dispatch)
+        }
+    } catch (err) {
+        console.log(`Something went wrong: ${err}`);
+    }
+}
+
+export const createGroup = (usergroup: IUsergroup) => async (dispatch) => {
+    try {
+        const response = await apiClient.post('group', usergroup);
+        if (response.status === 200) {
+            const groupResponse = await apiClient('group');
+            const ugResponse = await apiClient(`/user/groups/${usergroup.user.id}`);
+            if (groupResponse.status === 200) {
+                dispatch({
+                    type: GroupTypes.Set_Groups,
+                    payload: groupResponse.data
+                });
+            }
+            if (ugResponse.status === 200) {
+                dispatch({
+                    type: loginTypes.Set_User_Groups,
+                    payload: ugResponse.data
+                });
+            }
         }
     } catch (err) {
         console.log(`Something went wrong: ${err}`);
